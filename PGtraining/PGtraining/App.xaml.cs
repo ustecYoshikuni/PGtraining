@@ -1,5 +1,5 @@
-﻿using Prism.Ioc;
-using PGtraining.Views;
+﻿using PGtraining.Views;
+using Prism.Ioc;
 using System.Windows;
 
 namespace PGtraining
@@ -16,7 +16,6 @@ namespace PGtraining
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
         }
     }
 }
