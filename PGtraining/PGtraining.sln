@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PGtraining.Lib", "PGtrainin
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{BF442B7D-42EE-444C-8644-31263B408365}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{FFBFC333-C4F2-4872-B6B3-93323F845606}"
+	ProjectSection(SolutionItems) = preProject
+		sample\2020060112000000.csv = sample\2020060112000000.csv
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
