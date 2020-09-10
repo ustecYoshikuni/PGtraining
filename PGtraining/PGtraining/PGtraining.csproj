@@ -11,6 +11,7 @@
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1850-pre" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PGtraining.Lib\PGtraining.Lib.csproj" />
     <ProjectReference Include="..\PGtraining.RisMenu\PGtraining.RisMenu.csproj" />
   </ItemGroup>
 </Project>
