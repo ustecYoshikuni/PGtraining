@@ -5,6 +5,12 @@
     <AssemblyName>PGtraining.RisMenu</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Views\ViewA.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="Views\ViewA.xaml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0-ci1936" />
     <PackageReference Include="Prism.Core" Version="8.0.0.1850-pre" />
     <PackageReference Include="Prism.Unity" Version="8.0.0.1850-pre" />

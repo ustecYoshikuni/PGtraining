@@ -1,5 +1,7 @@
-﻿using PGtraining.Views;
+﻿using PGtraining.RisMenu;
+using PGtraining.Views;
 using Prism.Ioc;
+using Prism.Modularity;
 using System.Windows;
 
 namespace PGtraining
@@ -16,6 +18,11 @@ namespace PGtraining
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+        }
+
+        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+        {
+            moduleCatalog.AddModule<RisMenuModule>(InitializationMode.WhenAvailable);
         }
     }
 }

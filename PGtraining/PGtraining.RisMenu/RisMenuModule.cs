@@ -17,6 +17,8 @@ namespace PGtraining.RisMenu
         {
             // DIコンテナにインスタンスを登録
             containerRegistry.RegisterSingleton<Views.Login>();
+            containerRegistry.RegisterSingleton<Views.Menu>();
+            containerRegistry.RegisterSingleton<Views.WorkList>();
         }
     }
 }
