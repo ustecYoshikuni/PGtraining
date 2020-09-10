@@ -17,4 +17,7 @@
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1850-pre" />
     <PackageReference Include="ReactiveProperty" Version="7.2.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PGtraining.Lib\PGtraining.Lib.csproj" />
+  </ItemGroup>
 </Project>

@@ -16,9 +16,9 @@ namespace PGtraining.RisMenu
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // DIコンテナにインスタンスを登録
-            containerRegistry.RegisterSingleton<Views.Login>();
-            containerRegistry.RegisterSingleton<Views.Menu>();
-            containerRegistry.RegisterSingleton<Views.WorkList>();
+            containerRegistry.RegisterForNavigation<Views.Login>();
+            containerRegistry.RegisterForNavigation<Views.Menu>();
+            containerRegistry.RegisterForNavigation<Views.WorkList>();
         }
     }
 }
