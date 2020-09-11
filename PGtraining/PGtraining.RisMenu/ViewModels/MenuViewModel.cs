@@ -9,7 +9,6 @@ namespace PGtraining.RisMenu.ViewModels
     {
         public ReactiveCommand LogoutCommand { get; }
         public ReactiveCommand WorkListCommand { get; }
-
         private IRegionManager RegionManager { get; set; }
         private IRegionNavigationService RegionNavigationService { get; set; }
 

@@ -18,11 +18,11 @@
             <TextBlock FontSize="20">Menu</TextBlock>
         </Grid>
         <Grid Row="1" Margin="10">
-            <Button Command="{Binding WorkListCommand}">WorkList</Button>
+            <Button Width="100" Command="{Binding WorkListCommand}">WorkList</Button>
         </Grid>
 
         <Grid Row="2" Margin="10">
-            <Button Command="{Binding LogoutCommand}">Logout</Button>
+            <Button Width="100" Command="{Binding LogoutCommand}">Logout</Button>
         </Grid>
     </Grid>
 </UserControl>
