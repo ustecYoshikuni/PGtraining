@@ -11,11 +11,11 @@
     <Page Remove="Views\ViewA.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MaterialDesignThemes" Version="3.2.0-ci1936" />
+    <PackageReference Include="MaterialDesignThemes" Version="3.2.0-ci1951" />
     <PackageReference Include="Prism.Core" Version="8.0.0.1850-pre" />
     <PackageReference Include="Prism.Unity" Version="8.0.0.1850-pre" />
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1850-pre" />
-    <PackageReference Include="ReactiveProperty" Version="7.2.0" />
+    <PackageReference Include="ReactiveProperty" Version="7.2.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PGtraining.Lib\PGtraining.Lib.csproj" />
