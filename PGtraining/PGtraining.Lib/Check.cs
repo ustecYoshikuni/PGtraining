@@ -92,7 +92,7 @@ namespace PGtraining.Lib
 
         static public bool IsDateTime(string target, string format = "")
         {
-            if ((format.ToUpper() == "YYYYMMDD")))
+            if ((format.ToUpper() == "YYYYMMDD"))
             {
                 target = Lib.Change.YyyymmddToDateString(target);
             }
