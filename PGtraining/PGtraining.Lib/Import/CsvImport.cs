@@ -13,6 +13,8 @@ namespace PGtraining.Lib.Import
 
         public bool Import(string filePath)
         {
+            this.Log.Write($"Import({filePath})", LevelEnum.INFO);
+
             var result = false;
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -43,6 +45,7 @@ namespace PGtraining.Lib.Import
                     {
                         //ログ出力：読込エラー
                         this.Log.Write("読込失敗", LevelEnum.ERRROR);
+                        continue;
                     }
 
                     if (this.CheckOrder(order))
@@ -52,19 +55,21 @@ namespace PGtraining.Lib.Import
                     {
                         //不正データ
                         this.Log.Write("データが不正", LevelEnum.ERRROR);
+                        continue;
                     }
 
-                    if (this.DbInsert(order))
+                    if (this.DbInsertOrUpdate(order))
                     {
                     }
                     else
                     {
                         //登録失敗
                         this.Log.Write("DBの登録に失敗", LevelEnum.ERRROR);
+                        continue;
                     }
+                    result = true;
                 }
             }
-
             return result;
         }
 
@@ -78,17 +83,33 @@ namespace PGtraining.Lib.Import
             return order.CheckAndSet();
         }
 
-        private bool DbInsert(Template order)
+        private bool DbInsertOrUpdate(Template order)
         {
             var result = false;
-            try
+
+            if (DB.Sql.HasOrderNo(order.Order))
             {
-                DB.Sql.InsertOrder(order);
-                result = true;
+                try
+                {
+                    DB.Sql.UpdateOrder(order);
+                    result = true;
+                }
+                catch (System.Exception ex)
+                {
+                    this.Log.Write(ex.ToString(), LevelEnum.ERRROR);
+                }
             }
-            catch (System.Exception ex)
+            else
             {
-                this.Log.Write(ex.ToString(), LevelEnum.ERRROR);
+                try
+                {
+                    DB.Sql.InsertOrder(order);
+                    result = true;
+                }
+                catch (System.Exception ex)
+                {
+                    this.Log.Write(ex.ToString(), LevelEnum.ERRROR);
+                }
             }
 
             return result;
