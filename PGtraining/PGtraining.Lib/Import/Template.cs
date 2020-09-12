@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using PGtraining.Lib.DB;
+using System.Collections.Generic;
 using System.Linq;
 using static PGtraining.Lib.Log.LogLeverl;
 
@@ -41,16 +42,8 @@ namespace PGtraining.Lib.Import
             (new Element("Menu", 11)),
         };
 
-        public string OrderNo { get; set; }
-        public string StudyDate { get; set; }
-        public string ProcessingType { get; set; }
-        public string InspectionType { get; set; }
-        public string InspectionName { get; set; }
-        public string PatientId { get; set; }
-        public string PatientNameKanji { get; set; }
-        public string PatientNameKana { get; set; }
-        public string PatientBirth { get; set; }
-        public string PatientSex { get; set; }
+        public Order Order { get; set; } = new Order();
+
         public string Menu { get; set; }
 
         public List<string> MenuCodes { get; set; } = new List<string>();
@@ -98,7 +91,7 @@ namespace PGtraining.Lib.Import
                 var value = this.Elements.Where(x => x.Name == "OrderNo").Select(x => x.Value).First().Trim();
                 if ((Check.IsAlphaNumericOnly(value, true, 1, 8)))
                 {
-                    this.OrderNo = value;
+                    this.Order.OrderNo = value;
                     this.Log.Write($"OrderNo:{value}", LevelEnum.INFO);
                 }
                 else
@@ -111,7 +104,7 @@ namespace PGtraining.Lib.Import
                 value = this.Elements.Where(x => x.Name == "StudyDate").Select(x => x.Value).First().Trim();
                 if ((Check.IsDateTime(value, "yyyyMMdd")))
                 {
-                    this.StudyDate = value;
+                    this.Order.StudyDate = value;
                 }
                 else
                 {
@@ -121,9 +114,9 @@ namespace PGtraining.Lib.Import
                 }
 
                 value = this.Elements.Where(x => x.Name == "ProcessingType").Select(x => x.Value).First().Trim();
-                if ((Check.IsMatch(value, "[123]", true, 1)))
+                if ((Check.IsMatch(value, "[1-3]", true, 1,1)))
                 {
-                    this.ProcessingType = value;
+                    this.Order.ProcessingType = value;
                 }
                 else
                 {
@@ -135,7 +128,7 @@ namespace PGtraining.Lib.Import
                 value = this.Elements.Where(x => x.Name == "InspectionType").Select(x => x.Value).First().Trim();
                 if ((Check.IsAlphaNumericOnly(value, false, 1, 8)))
                 {
-                    this.InspectionType = value;
+                    this.Order.InspectionType = value;
                 }
                 else
                 {
@@ -145,9 +138,9 @@ namespace PGtraining.Lib.Import
                 }
 
                 value = this.Elements.Where(x => x.Name == "InspectionName").Select(x => x.Value).First().Trim();
-                if ((Check.IsAlphaNumericOnly(value, false, 1, 32)))
+                if ((Check.IsMatch(value,".*", false, 1, 32)))
                 {
-                    this.InspectionName = value;
+                    this.Order.InspectionName = value;
                 }
                 else
                 {
@@ -159,7 +152,7 @@ namespace PGtraining.Lib.Import
                 value = this.Elements.Where(x => x.Name == "PatientId").Select(x => x.Value).First().Trim();
                 if ((Check.IsAlphaNumericOnly(value, true, 1, 10)))
                 {
-                    this.PatientId = value;
+                    this.Order.PatientId = value;
                 }
                 else
                 {
@@ -169,15 +162,9 @@ namespace PGtraining.Lib.Import
                 }
 
                 value = this.Elements.Where(x => x.Name == "PatientNameKanji").Select(x => x.Value).First().Trim();
-                if (string.IsNullOrEmpty(value))
+                if (Check.IsMatch(value,".*",false,1,64))
                 {
-                    // ログ書く
-                    this.Log.Write($"PatientNameKanji:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-                else if (value.Length <= 64)
-                {
-                    this.PatientNameKanji = value;
+                    this.Order.PatientNameKanji = value;
                 }
                 else
                 {
@@ -189,7 +176,7 @@ namespace PGtraining.Lib.Import
                 value = this.Elements.Where(x => x.Name == "PatientNameKana").Select(x => x.Value).First().Trim();
                 if (Check.IsKataKana(value, false, 1, 64))
                 {
-                    this.PatientNameKana = value;
+                    this.Order.PatientNameKana = value;
                 }
                 else
                 {
@@ -201,7 +188,7 @@ namespace PGtraining.Lib.Import
                 value = this.Elements.Where(x => x.Name == "PatientBirth").Select(x => x.Value).First().Trim();
                 if ((Check.IsDateTime(value, "yyyyMMdd")))
                 {
-                    this.PatientBirth = value;
+                    this.Order.PatientBirth = value;
                 }
                 else
                 {
@@ -211,9 +198,9 @@ namespace PGtraining.Lib.Import
                 }
 
                 value = this.Elements.Where(x => x.Name == "PatientSex").Select(x => x.Value).First().Trim();
-                if ((Check.IsMatch(value, "[FMO]", true, 1)))
+                if ((Check.IsMatch(value, "[FMO]", true, 1,1)))
                 {
-                    this.PatientSex = value;
+                    this.Order.PatientSex = value;
                 }
                 else
                 {
