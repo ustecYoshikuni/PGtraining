@@ -5,21 +5,27 @@ namespace PGtraining.Lib
 {
     static public class Check
     {
-        static public bool IsMatch(string target, string checkRule, bool just = false, int n = 0)
+        static public bool IsMatch(string target, string checkRule, bool just = false, int min = 0, int max = 0)
         {
             var result = false;
+
+            if ((0 < min) && (string.IsNullOrEmpty(target)))
+            {
+                return result;
+            }
+
             if (Regex.IsMatch(@target, @checkRule))
             {
                 result = true;
             }
 
-            if (0 < n)
+            if (0 < max)
             {
-                result = (target.Length <= n) ? true : false;
+                result = (target.Length <= max) ? true : false;
             }
             if ((result) && (just))
             {
-                result = (target.Length == n) ? true : false;
+                result = (target.Length == max) ? true : false;
             }
             return result;
         }
