@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{FFBFC333-C4F2-4872-B6B3-93323F845606}"
 	ProjectSection(SolutionItems) = preProject
 		sample\2020060112000000.csv = sample\2020060112000000.csv
+		sample\2020060112300000.csv = sample\2020060112300000.csv
 		sample\20200601140000.csv = sample\20200601140000.csv
 	EndProjectSection
 EndProject
