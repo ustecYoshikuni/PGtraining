@@ -6,7 +6,7 @@ namespace PGtraining.Lib.Import
 {
     public class CsvImport
     {
-        public Template CsvFile = new Template();
+        public List<Template> OrderLists = new List<Template>();
 
         public bool Import(string filePath)
         {
@@ -32,37 +32,36 @@ namespace PGtraining.Lib.Import
                         lists.Add(text);
                     }
 
-                    this.CheckAndSet(lists);
+                    var order = new Template();
+                    if (this.ReadOrder(order, lists))
+                    {
+                    }
+                    else
+                    {
+                        //読込エラー
+                    }
+
+                    if (this.CheckOrder(order))
+                    {
+                    }
+                    else
+                    {
+                        //不正データ
+                    }
                 }
             }
 
             return result;
         }
 
-        private bool CheckAndSet(List<string> lists)
+        private bool ReadOrder(Template order, List<string> lists)
         {
-            var result = false;
-
-            for (var i = 0; i < lists.Count; i++)
-            {
-                if (i <= this.CsvFile.ElementCount)
-                {
-                    this.CsvFile.Elements[i].Value = lists[i];
-                }
-                else
-                {
-                    this.CsvFile.Elements[this.CsvFile.ElementCount - 1].Value = lists[i];
-                }
-            }
-
-            return result;
+            return order.Read(lists);
         }
 
-        private bool CsvCheck(List<string> lists)
+        private bool CheckOrder(Template order)
         {
-            var result = false;
-
-            return result;
+            return order.CheckAndSet();
         }
     }
 }
