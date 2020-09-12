@@ -109,7 +109,7 @@ namespace PGtraining.Lib.Import
                 }
 
                 value = this.Elements.Where(x => x.Name == "StudyDate").Select(x => x.Value).First().Trim();
-                if ((Check.IsDateTime(value, "YYYYMMDD")))
+                if ((Check.IsDateTime(value, "yyyyMMdd")))
                 {
                     this.StudyDate = value;
                 }
@@ -199,7 +199,7 @@ namespace PGtraining.Lib.Import
                 }
 
                 value = this.Elements.Where(x => x.Name == "PatientBirth").Select(x => x.Value).First().Trim();
-                if ((Check.IsDateTime(value, "YYYYMMDD")))
+                if ((Check.IsDateTime(value, "yyyyMMdd")))
                 {
                     this.PatientBirth = value;
                 }
