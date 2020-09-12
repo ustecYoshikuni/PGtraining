@@ -53,7 +53,7 @@ namespace PGtraining.Lib.Import
         public string Menu { get; set; }
 
         public List<string> MenuCodes { get; set; } = new List<string>();
-        public List<string> MenuName { get; set; } = new List<string>();
+        public List<string> MenuNames { get; set; } = new List<string>();
 
         public Template()
         { }
@@ -203,16 +203,23 @@ namespace PGtraining.Lib.Import
                     return false;
                 }
 
-                value = this.Elements.Where(x => x.Name == "Menu").Select(x => x.Value).First().Trim() ;
+                value = this.Elements.Where(x => x.Name == "Menu").Select(x => x.Value).First();
                 if (string.IsNullOrEmpty(value))
                 {
                     // ログ書く
                     return false;
                 }
-                else if ((3 < value.Length)&&(value.Contains(",")))
+                else if ((3 < value.Length) && (this.Menu.Split(',').Length % 2 == 0))
                 {
                     this.Menu = value;
 
+                    if (this.SetAndCheckMenu(this.Menu))
+                    {
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
@@ -226,19 +233,40 @@ namespace PGtraining.Lib.Import
 
         private bool SetAndCheckMenu(string menu)
         {
-            var result = false;
-
-
-
-
-
-
-
-
-            return result;
+            string[] values = menu.Split(',');
+            return this.SetMenu(values);
         }
 
+        private bool SetMenu(string[] values)
+        {
+            var result = false;
+            for (var i = 0; i < values.Count() - 1; i = i + 2)
+            {
+                var code = "";
+                var name = "";
 
+                if (i % 2 == 0)
+                {
+                    var valueCode = values[i];
+                    if ((Check.IsAlphaNumericOnly(valueCode, true, 1, 8)))
+                    {
+                        code = valueCode;
+                    }
 
+                    var valueName = values[i + 1];
+                    if (Check.IsMatch(valueName, ".*", true, 1, 32))
+                    {
+                        name = valueName;
+                    }
+                }
+
+                if (!((string.IsNullOrEmpty(code)) && (string.IsNullOrEmpty(name))))
+                {
+                    this.MenuCodes.Add(code);
+                    this.MenuNames.Add(name);
+                }
+            }
+            return result;
+        }
     }
 }
