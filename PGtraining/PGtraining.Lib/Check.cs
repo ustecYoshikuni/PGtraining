@@ -26,44 +26,62 @@ namespace PGtraining.Lib
 
         /// <summary>
         /// targetが英数字のみか判定
-        /// 文字数が指定されている場合は、n
+        /// 文字数が指定されている場合は、min～max
         /// 文字数が指定の文字数でジャストか以下か　true:ジャスト,false:以下OK
         /// </summary>
         /// <param name="target"></param>
         /// <param name="just"></param>
-        /// <param name="n"></param>
+        /// <param name="max"></param>
         /// <returns></returns>
-        static public bool IsAlphaNumericOnly(string target, bool just = false, int n = 0)
+        static public bool IsAlphaNumericOnly(string target, bool just = false, int min = 0, int max = 0)
         {
-            if (Regex.IsMatch(@target, @"[^a-zA-z0-9]"))
+            var result = false;
+
+            if ((0 < min) && (string.IsNullOrEmpty(target)))
             {
-                return false;
+                return result;
             }
 
-            var result = false;
-            if (0 < n)
+            if (Regex.IsMatch(@target, @"[^a-zA-z0-9]"))
             {
-                result = (target.Length <= n) ? true : false;
+                return result;
+            }
+
+            if (0 < max)
+            {
+                result = (target.Length <= max) ? true : false;
             }
             if ((result) && (just))
             {
-                result = (target.Length == n) ? true : false;
+                result = (target.Length == max) ? true : false;
             }
 
             return result;
         }
 
-        static public bool IsAlphaNumericPlusAlphaOnly(string target, int n = 0)
+        static public bool IsKataKana(string target, bool just = false, int min = 0, int max = 0)
         {
-            if (Regex.IsMatch(@target, @"[^a-zA-z0-9-_]"))
+            var result = false;
+            if ((0 < min) && (string.IsNullOrEmpty(target)))
             {
-                return false;
+                return result;
             }
-            if (0 < n)
+
+            if (Regex.IsMatch(@target, @"^[\p{IsKatakana}\u31F0-\u31FF\u3099-\u309C]+$"))
             {
-                return (target.Length == n) ? true : false;
+                return result;
             }
-            return true;
+
+            if (0 < max)
+            {
+                result = (target.Length <= max) ? true : false;
+            }
+            if ((result) && (just))
+            {
+                result = (target.Length == max) ? true : false;
+            }
+
+            return result;
         }
 
         static public bool IsDateTime(string target, string format = "")
