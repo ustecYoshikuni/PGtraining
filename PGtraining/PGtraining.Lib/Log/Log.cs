@@ -8,7 +8,7 @@ namespace PGtraining.Lib.Log
 {
     public class Log
     {
-        public string FilePath { get; set; } = $"C:\\testLog\\Log_{DateTime.Now.ToString("yyyyMMdd")}.log";
+        public string FilePath { get; set; } = $"{Setting.Setting.LogFolderPath}\\Log_{DateTime.Now.ToString("yyyyMMdd")}.log";
         public int LogLevel = 4;
         public List<string> StockData = new List<string>();
 
@@ -35,7 +35,7 @@ namespace PGtraining.Lib.Log
                             Console.WriteLine(string.Join($"{Environment.NewLine}", this.StockData));
                             this.StockData.Clear();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                         }
                     }

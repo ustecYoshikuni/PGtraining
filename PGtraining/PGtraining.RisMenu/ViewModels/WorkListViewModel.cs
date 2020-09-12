@@ -3,6 +3,7 @@ using PGtraining.Lib.Setting;
 using Prism.Mvvm;
 using Prism.Regions;
 using Reactive.Bindings;
+using System.IO;
 
 namespace PGtraining.RisMenu.ViewModels
 {
@@ -54,7 +55,11 @@ namespace PGtraining.RisMenu.ViewModels
         private void Import()
         {
             var csvImport = new CsvImport();
-            csvImport.Import(@"C:\Users\Yoshikuni\source\repos\PGtraining\PGtraining\sample\2020060112000000.csv");
+            var files = Directory.GetFiles(Setting.ImportFolderPath);
+            foreach (var file in files)
+            {
+                csvImport.Import(file);
+            }
         }
     }
 }

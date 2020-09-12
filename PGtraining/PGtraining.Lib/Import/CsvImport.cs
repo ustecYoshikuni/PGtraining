@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using static PGtraining.Lib.Log.LogLeverl;
 
 namespace PGtraining.Lib.Import
 {
     public class CsvImport
     {
         public List<Template> OrderLists = new List<Template>();
+
+        private Log.Log Log = new Lib.Log.Log();
 
         public bool Import(string filePath)
         {
@@ -38,7 +41,8 @@ namespace PGtraining.Lib.Import
                     }
                     else
                     {
-                        //読込エラー
+                        //ログ出力：読込エラー
+                        this.Log.Write("読込失敗", LevelEnum.ERRROR);
                     }
 
                     if (this.CheckOrder(order))
@@ -47,6 +51,16 @@ namespace PGtraining.Lib.Import
                     else
                     {
                         //不正データ
+                        this.Log.Write("データが不正", LevelEnum.ERRROR);
+                    }
+
+                    if (this.DbInsert(order))
+                    {
+                    }
+                    else
+                    {
+                        //登録失敗
+                        this.Log.Write("DBの登録に失敗", LevelEnum.ERRROR);
                     }
                 }
             }
@@ -62,6 +76,22 @@ namespace PGtraining.Lib.Import
         private bool CheckOrder(Template order)
         {
             return order.CheckAndSet();
+        }
+
+        private bool DbInsert(Template order)
+        {
+            var result = false;
+            try
+            {
+                DB.Sql.InsertOrder(order);
+                result = true;
+            }
+            catch (System.Exception ex)
+            {
+                this.Log.Write(ex.ToString(), LevelEnum.ERRROR);
+            }
+
+            return result;
         }
     }
 }

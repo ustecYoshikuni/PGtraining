@@ -22,10 +22,11 @@ namespace PGtraining.Lib
             if (0 < max)
             {
                 result = (target.Length <= max) ? true : false;
-            }
-            if ((result) && (just))
-            {
-                result = (target.Length == max) ? true : false;
+
+                if ((result) && (just))
+                {
+                    result = (target.Length == max) ? true : false;
+                }
             }
             return result;
         }
@@ -56,10 +57,38 @@ namespace PGtraining.Lib
             if (0 < max)
             {
                 result = (target.Length <= max) ? true : false;
+
+                if ((result) && (just))
+                {
+                    result = (target.Length == max) ? true : false;
+                }
             }
-            if ((result) && (just))
+
+            return result;
+        }
+
+        static public bool IsAlphaNumericPlus(string target, bool just = false, int min = 0, int max = 0)
+        {
+            var result = false;
+
+            if ((0 < min) && (string.IsNullOrEmpty(target)))
             {
-                result = (target.Length == max) ? true : false;
+                return result;
+            }
+
+            if (Regex.IsMatch(@target, @"[^a-zA-z0-9_-]"))
+            {
+                return result;
+            }
+
+            if (0 < max)
+            {
+                result = (target.Length <= max) ? true : false;
+
+                if ((result) && (just))
+                {
+                    result = (target.Length == max) ? true : false;
+                }
             }
 
             return result;
@@ -81,10 +110,11 @@ namespace PGtraining.Lib
             if (0 < max)
             {
                 result = (target.Length <= max) ? true : false;
-            }
-            if ((result) && (just))
-            {
-                result = (target.Length == max) ? true : false;
+
+                if ((result) && (just))
+                {
+                    result = (target.Length == max) ? true : false;
+                }
             }
 
             return result;

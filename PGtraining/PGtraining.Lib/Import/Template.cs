@@ -43,16 +43,20 @@ namespace PGtraining.Lib.Import
         };
 
         public Order Order { get; set; } = new Order();
+        public List<Menu> MenuList { get; set; } = new List<Menu>();
 
-        public string Menu { get; set; }
+        public string MenuText { get; set; }
 
-        public List<string> MenuCodes { get; set; } = new List<string>();
-        public List<string> MenuNames { get; set; } = new List<string>();
+        private Log.Log Log = null;
 
-        private Log.Log Log = new Log.Log();
+        public Template(Log.Log log)
+        {
+            this.Log = log;
+        }
 
         public Template()
         {
+            this.Log = new Lib.Log.Log();
         }
 
         public bool Read(List<string> lists)
@@ -61,17 +65,19 @@ namespace PGtraining.Lib.Import
 
             try
             {
+                var menu = new List<string>();
                 for (var i = 0; i < lists.Count; i++)
                 {
-                    if (i < this.ElementCount)
+                    if (i < this.ElementCount - 1)
                     {
                         this.Elements[i].Value = lists[i];
                     }
                     else
                     {
-                        this.Elements[this.ElementCount - 1].Value = lists[i];
+                        menu.Add(lists[i]);
                     }
                 }
+                this.Elements[this.ElementCount - 1].Value = string.Join(",", menu);
                 result = true;
             }
             catch (System.Exception ex)
@@ -86,156 +92,153 @@ namespace PGtraining.Lib.Import
         {
             this.Log.Write($"CheckAndSet() start", LevelEnum.INFO);
 
-            for (var i = 0; i < this.ElementCount; i++)
+            var value = this.Elements.Where(x => x.Name == "OrderNo").Select(x => x.Value).First().Trim();
+            if ((Check.IsAlphaNumericOnly(value, true, 1, 8)))
             {
-                var value = this.Elements.Where(x => x.Name == "OrderNo").Select(x => x.Value).First().Trim();
-                if ((Check.IsAlphaNumericOnly(value, true, 1, 8)))
+                this.Order.OrderNo = value;
+                this.Log.Write($"OrderNo:{value}", LevelEnum.INFO);
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"OrderNo:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "StudyDate").Select(x => x.Value).First().Trim();
+            if ((Check.IsDateTime(value, "yyyyMMdd")))
+            {
+                this.Order.StudyDate = value;
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"StudyDate:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "ProcessingType").Select(x => x.Value).First().Trim();
+            if ((Check.IsMatch(value, "[1-3]", true, 1, 1)))
+            {
+                this.Order.ProcessingType = value;
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"ProcessingType:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "InspectionType").Select(x => x.Value).First().Trim();
+            if ((Check.IsAlphaNumericOnly(value, false, 1, 8)))
+            {
+                this.Order.InspectionType = value;
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"InspectionType:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "InspectionName").Select(x => x.Value).First().Trim();
+            if ((Check.IsMatch(value, ".*", false, 1, 32)))
+            {
+                this.Order.InspectionName = value;
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"InspectionName:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "PatientId").Select(x => x.Value).First().Trim();
+            if ((Check.IsAlphaNumericOnly(value, true, 1, 10)))
+            {
+                this.Order.PatientId = value;
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"PatientId:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "PatientNameKanji").Select(x => x.Value).First().Trim();
+            if (Check.IsMatch(value, ".*", false, 1, 64))
+            {
+                this.Order.PatientNameKanji = value;
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"PatientNameKanji:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "PatientNameKana").Select(x => x.Value).First().Trim();
+            if (Check.IsKataKana(value, false, 1, 64))
+            {
+                this.Order.PatientNameKana = value;
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"PatientNameKana:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "PatientBirth").Select(x => x.Value).First().Trim();
+            if ((Check.IsDateTime(value, "yyyyMMdd")))
+            {
+                this.Order.PatientBirth = value;
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"PatientBirth:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "PatientSex").Select(x => x.Value).First().Trim();
+            if ((Check.IsMatch(value, "[FMO]", true, 1, 1)))
+            {
+                this.Order.PatientSex = value;
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"PatientSex:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+
+            value = this.Elements.Where(x => x.Name == "Menu").Select(x => x.Value).First();
+            if (string.IsNullOrEmpty(value))
+            {
+                // ログ書く
+                this.Log.Write($"Menu:値が不正です。", LevelEnum.ERRROR);
+                return false;
+            }
+            else if ((3 < value.Length) && (value.Split(',').Length % 2 == 0))
+            {
+                this.MenuText = value;
+
+                if (this.SetAndCheckMenu(this.MenuText))
                 {
-                    this.Order.OrderNo = value;
-                    this.Log.Write($"OrderNo:{value}", LevelEnum.INFO);
                 }
                 else
                 {
-                    // ログ書く
-                    this.Log.Write($"OrderNo:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "StudyDate").Select(x => x.Value).First().Trim();
-                if ((Check.IsDateTime(value, "yyyyMMdd")))
-                {
-                    this.Order.StudyDate = value;
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"StudyDate:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "ProcessingType").Select(x => x.Value).First().Trim();
-                if ((Check.IsMatch(value, "[1-3]", true, 1,1)))
-                {
-                    this.Order.ProcessingType = value;
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"ProcessingType:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "InspectionType").Select(x => x.Value).First().Trim();
-                if ((Check.IsAlphaNumericOnly(value, false, 1, 8)))
-                {
-                    this.Order.InspectionType = value;
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"InspectionType:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "InspectionName").Select(x => x.Value).First().Trim();
-                if ((Check.IsMatch(value,".*", false, 1, 32)))
-                {
-                    this.Order.InspectionName = value;
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"InspectionName:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "PatientId").Select(x => x.Value).First().Trim();
-                if ((Check.IsAlphaNumericOnly(value, true, 1, 10)))
-                {
-                    this.Order.PatientId = value;
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"PatientId:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "PatientNameKanji").Select(x => x.Value).First().Trim();
-                if (Check.IsMatch(value,".*",false,1,64))
-                {
-                    this.Order.PatientNameKanji = value;
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"PatientNameKanji:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "PatientNameKana").Select(x => x.Value).First().Trim();
-                if (Check.IsKataKana(value, false, 1, 64))
-                {
-                    this.Order.PatientNameKana = value;
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"PatientNameKana:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "PatientBirth").Select(x => x.Value).First().Trim();
-                if ((Check.IsDateTime(value, "yyyyMMdd")))
-                {
-                    this.Order.PatientBirth = value;
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"PatientBirth:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "PatientSex").Select(x => x.Value).First().Trim();
-                if ((Check.IsMatch(value, "[FMO]", true, 1,1)))
-                {
-                    this.Order.PatientSex = value;
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"PatientSex:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
-
-                value = this.Elements.Where(x => x.Name == "Menu").Select(x => x.Value).First();
-                if (string.IsNullOrEmpty(value))
-                {
-                    // ログ書く
                     this.Log.Write($"Menu:値が不正です。", LevelEnum.ERRROR);
+
                     return false;
                 }
-                else if ((3 < value.Length) && (this.Menu.Split(',').Length % 2 == 0))
-                {
-                    this.Menu = value;
-
-                    if (this.SetAndCheckMenu(this.Menu))
-                    {
-                    }
-                    else
-                    {
-                        this.Log.Write($"Menu:値が不正です。", LevelEnum.ERRROR);
-
-                        return false;
-                    }
-                }
-                else
-                {
-                    // ログ書く
-                    this.Log.Write($"Menu:値が不正です。", LevelEnum.ERRROR);
-                    return false;
-                }
+            }
+            else
+            {
+                // ログ書く
+                this.Log.Write($"Menu:値が不正です。", LevelEnum.ERRROR);
+                return false;
             }
 
             return true;
@@ -258,7 +261,7 @@ namespace PGtraining.Lib.Import
                 if (i % 2 == 0)
                 {
                     var valueCode = values[i];
-                    if ((Check.IsAlphaNumericOnly(valueCode, true, 1, 8)))
+                    if ((Check.IsAlphaNumericPlus(valueCode, false, 1, 8)))
                     {
                         code = valueCode;
                     }
@@ -269,7 +272,7 @@ namespace PGtraining.Lib.Import
                     }
 
                     var valueName = values[i + 1];
-                    if (Check.IsMatch(valueName, ".*", true, 1, 32))
+                    if (Check.IsMatch(valueName, ".*", false, 1, 32))
                     {
                         name = valueName;
                     }
@@ -282,9 +285,7 @@ namespace PGtraining.Lib.Import
 
                 if (!((string.IsNullOrEmpty(code)) && (string.IsNullOrEmpty(name))))
                 {
-                    this.MenuCodes.Add(code);
-                    this.MenuNames.Add(name);
-
+                    this.MenuList.Add(new Menu { OrderNo = this.Order.OrderNo, MenuCode = code, MenuName = name });
                     result = true;
                 }
             }
