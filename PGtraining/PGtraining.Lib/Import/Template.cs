@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using static PGtraining.Lib.Log.LogLeverl;
 
 namespace PGtraining.Lib.Import
 {
@@ -55,8 +56,11 @@ namespace PGtraining.Lib.Import
         public List<string> MenuCodes { get; set; } = new List<string>();
         public List<string> MenuNames { get; set; } = new List<string>();
 
+        private Log.Log Log = new Log.Log();
+
         public Template()
-        { }
+        {
+        }
 
         public bool Read(List<string> lists)
         {
@@ -77,25 +81,30 @@ namespace PGtraining.Lib.Import
                 }
                 result = true;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 //ログ出力：読込エラー
+                this.Log.Write(ex.ToString(), LevelEnum.CRITICAL);
             }
             return result;
         }
 
         public bool CheckAndSet()
         {
+            this.Log.Write($"CheckAndSet() start", LevelEnum.INFO);
+
             for (var i = 0; i < this.ElementCount; i++)
             {
                 var value = this.Elements.Where(x => x.Name == "OrderNo").Select(x => x.Value).First().Trim();
                 if ((Check.IsAlphaNumericOnly(value, true, 1, 8)))
                 {
                     this.OrderNo = value;
+                    this.Log.Write($"OrderNo:{value}", LevelEnum.INFO);
                 }
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"OrderNo:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
@@ -107,17 +116,19 @@ namespace PGtraining.Lib.Import
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"StudyDate:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
                 value = this.Elements.Where(x => x.Name == "ProcessingType").Select(x => x.Value).First().Trim();
-                if ((Check.IsMatch(value, "[1 - 3]", true, 1)))
+                if ((Check.IsMatch(value, "[123]", true, 1)))
                 {
                     this.ProcessingType = value;
                 }
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"ProcessingType:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
@@ -129,6 +140,7 @@ namespace PGtraining.Lib.Import
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"InspectionType:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
@@ -140,6 +152,7 @@ namespace PGtraining.Lib.Import
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"InspectionName:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
@@ -151,6 +164,7 @@ namespace PGtraining.Lib.Import
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"PatientId:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
@@ -158,6 +172,7 @@ namespace PGtraining.Lib.Import
                 if (string.IsNullOrEmpty(value))
                 {
                     // ログ書く
+                    this.Log.Write($"PatientNameKanji:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
                 else if (value.Length <= 64)
@@ -167,6 +182,7 @@ namespace PGtraining.Lib.Import
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"PatientNameKanji:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
@@ -178,6 +194,7 @@ namespace PGtraining.Lib.Import
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"PatientNameKana:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
@@ -189,6 +206,7 @@ namespace PGtraining.Lib.Import
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"PatientBirth:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
@@ -200,6 +218,7 @@ namespace PGtraining.Lib.Import
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"PatientSex:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
 
@@ -207,6 +226,7 @@ namespace PGtraining.Lib.Import
                 if (string.IsNullOrEmpty(value))
                 {
                     // ログ書く
+                    this.Log.Write($"Menu:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
                 else if ((3 < value.Length) && (this.Menu.Split(',').Length % 2 == 0))
@@ -218,12 +238,15 @@ namespace PGtraining.Lib.Import
                     }
                     else
                     {
+                        this.Log.Write($"Menu:値が不正です。", LevelEnum.ERRROR);
+
                         return false;
                     }
                 }
                 else
                 {
                     // ログ書く
+                    this.Log.Write($"Menu:値が不正です。", LevelEnum.ERRROR);
                     return false;
                 }
             }
@@ -252,11 +275,21 @@ namespace PGtraining.Lib.Import
                     {
                         code = valueCode;
                     }
+                    else
+                    {
+                        result = false;
+                        this.Log.Write($"MenuCode:値が不正です。", LevelEnum.ERRROR);
+                    }
 
                     var valueName = values[i + 1];
                     if (Check.IsMatch(valueName, ".*", true, 1, 32))
                     {
                         name = valueName;
+                    }
+                    else
+                    {
+                        result = false;
+                        this.Log.Write($"MenuName:値が不正です。", LevelEnum.ERRROR);
                     }
                 }
 
@@ -264,6 +297,8 @@ namespace PGtraining.Lib.Import
                 {
                     this.MenuCodes.Add(code);
                     this.MenuNames.Add(name);
+
+                    result = true;
                 }
             }
             return result;
