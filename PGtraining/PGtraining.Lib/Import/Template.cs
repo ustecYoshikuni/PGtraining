@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace PGtraining.Lib.Import
 {
@@ -54,11 +55,190 @@ namespace PGtraining.Lib.Import
         public List<string> MenuCodes { get; set; } = new List<string>();
         public List<string> MenuName { get; set; } = new List<string>();
 
-        public void Check()
+        public Template()
+        { }
+
+        public bool Read(List<string> lists)
+        {
+            var result = false;
+
+            try
+            {
+                for (var i = 0; i < lists.Count; i++)
+                {
+                    if (i < this.ElementCount)
+                    {
+                        this.Elements[i].Value = lists[i];
+                    }
+                    else
+                    {
+                        this.Elements[this.ElementCount - 1].Value = lists[i];
+                    }
+                }
+                result = true;
+            }
+            catch (System.Exception)
+            {
+                //ログ出力：読込エラー
+            }
+            return result;
+        }
+
+        public bool CheckAndSet()
         {
             for (var i = 0; i < this.ElementCount; i++)
             {
+                var value = this.Elements.Where(x => x.Name == "OrderNo").Select(x => x.Value).First().Trim();
+                if ((Check.IsAlphaNumericOnly(value, true, 1, 8)))
+                {
+                    this.OrderNo = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "StudyDate").Select(x => x.Value).First().Trim();
+                if ((Check.IsDateTime(value, "YYYYMMDD")))
+                {
+                    this.StudyDate = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "ProcessingType").Select(x => x.Value).First().Trim();
+                if ((Check.IsMatch(value, "[1 - 3]", true, 1)))
+                {
+                    this.ProcessingType = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "InspectionType").Select(x => x.Value).First().Trim();
+                if ((Check.IsAlphaNumericOnly(value, false, 1, 8)))
+                {
+                    this.InspectionType = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "InspectionName").Select(x => x.Value).First().Trim();
+                if ((Check.IsAlphaNumericOnly(value, false, 1, 32)))
+                {
+                    this.InspectionName = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "PatientId").Select(x => x.Value).First().Trim();
+                if ((Check.IsAlphaNumericOnly(value, true, 1, 10)))
+                {
+                    this.PatientId = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "PatientNameKanji").Select(x => x.Value).First().Trim();
+                if (string.IsNullOrEmpty(value))
+                {
+                    // ログ書く
+                    return false;
+                }
+                else if (value.Length <= 64)
+                {
+                    this.PatientNameKanji = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "PatientNameKana").Select(x => x.Value).First().Trim();
+                if (Check.IsKataKana(value, false, 1, 64))
+                {
+                    this.PatientNameKana = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "PatientBirth").Select(x => x.Value).First().Trim();
+                if ((Check.IsDateTime(value, "YYYYMMDD")))
+                {
+                    this.PatientBirth = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "PatientSex").Select(x => x.Value).First().Trim();
+                if ((Check.IsMatch(value, "[FMO]", true, 1)))
+                {
+                    this.PatientSex = value;
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
+
+                value = this.Elements.Where(x => x.Name == "Menu").Select(x => x.Value).First().Trim() ;
+                if (string.IsNullOrEmpty(value))
+                {
+                    // ログ書く
+                    return false;
+                }
+                else if ((3 < value.Length)&&(value.Contains(",")))
+                {
+                    this.Menu = value;
+
+                }
+                else
+                {
+                    // ログ書く
+                    return false;
+                }
             }
+
+            return true;
         }
+
+        private bool SetAndCheckMenu(string menu)
+        {
+            var result = false;
+
+
+
+
+
+
+
+
+            return result;
+        }
+
+
+
     }
 }
