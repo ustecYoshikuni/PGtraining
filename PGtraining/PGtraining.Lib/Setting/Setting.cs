@@ -10,5 +10,11 @@
 
         static public string LogFolderPath { get; set; }
             = @"C:\testLog";
+
+        static public string SuccessFolderPath { get; set; }
+            = @"C:\testLog\success";
+
+        static public string ErrorFolderPath { get; set; }
+            = @"C:\testLog\error";
     }
 }
