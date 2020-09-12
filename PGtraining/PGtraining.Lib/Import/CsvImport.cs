@@ -13,7 +13,7 @@ namespace PGtraining.Lib.Import
             var result = false;
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            StreamReader sr = new StreamReader(filePath, System.Text.Encoding.GetEncoding("Shift_JIS"));
+            var sr = new StreamReader(filePath, System.Text.Encoding.GetEncoding("Shift_JIS"));
             {
                 //ヘッダ分
                 sr.ReadLine();
