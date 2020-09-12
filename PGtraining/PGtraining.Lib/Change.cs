@@ -4,9 +4,9 @@
     {
         static public string YyyymmddToDateString(string date)
         {
-            if (Lib.Check.IsAlphaNumericOnly(date.Substring(0, 7), true, 8))
+            if (Lib.Check.IsAlphaNumericOnly(date.Substring(0, 8), true, 8))
             {
-                var dateString = $"{date.Substring(0, 3)}/{date.Substring(4, 5)}{date.Substring(6, 7)}";
+                var dateString = $"{date.Substring(0, 4)}/{date.Substring(4, 2)}/{date.Substring(6, 2)}";
                 return dateString;
             }
 
