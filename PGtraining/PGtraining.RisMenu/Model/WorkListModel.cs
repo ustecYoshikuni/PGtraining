@@ -18,7 +18,7 @@ namespace PGtraining.RisMenu.Model
         {
             var orders = Sql.GetOrders();
 
-            this.WorkList.AddRange( orders.Select(x => new OrderModel(x)));
+            this.WorkList.AddRange(orders.Select(x => new OrderModel(x)));
         }
     }
 }

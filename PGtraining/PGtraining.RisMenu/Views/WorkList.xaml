@@ -53,11 +53,11 @@
                 </DataGrid.InputBindings>
                 <!--<DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
                     </Style>
                 </DataGrid.ColumnHeaderStyle>-->
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="オーダ番号" 
+                    <DataGridTextColumn Header="オーダ番号"
                                         MinWidth="80"
                                         Binding="{Binding OrderNo.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
@@ -65,14 +65,14 @@
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="検査日付" 
+                    <DataGridTextColumn Header="検査日付"
                                         Binding="{Binding StudyDate.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="処理区分" 
+                    <DataGridTextColumn Header="処理区分"
                                         Binding="{Binding ProcessingType.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
@@ -86,56 +86,56 @@
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="検査種別&#10;　名称" 
+                    <DataGridTextColumn Header="検査種別&#10;　名称"
                                         Binding="{Binding InspectionName.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="患者ID" 
+                    <DataGridTextColumn Header="患者ID"
                                         Binding="{Binding PatientId.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="患者漢字&#10;　氏名" 
+                    <DataGridTextColumn Header="患者漢字&#10;　氏名"
                                         Binding="{Binding PatientNameKanji.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="患者カナ&#10;　氏名" 
+                    <DataGridTextColumn Header="患者カナ&#10;　氏名"
                                         Binding="{Binding PatientNameKana.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="　患者&#10;生年月日" 
+                    <DataGridTextColumn Header="　患者&#10;生年月日"
                                         Binding="{Binding PatientBirth.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="患者性別" 
+                    <DataGridTextColumn Header="患者性別"
                                         Binding="{Binding PatientSex.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="撮影項目&#10;　コード" 
+                    <DataGridTextColumn Header="撮影項目&#10;　コード"
                                         Binding="{Binding MenuCodes.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
                                                 Mode=TwoWay}"
                                                 CanUserResize="False">
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="撮影項目&#10;　名称" 
+                    <DataGridTextColumn Header="撮影項目&#10;　名称"
                                         Binding="{Binding MenuNames.Value,
                                                 UpdateSourceTrigger=PropertyChanged,
                                                 NotifyOnValidationError=True,
