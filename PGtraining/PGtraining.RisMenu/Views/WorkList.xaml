@@ -5,31 +5,156 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:PGtraining.RisMenu.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance local:WorkListViewModel}"
              prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="70" ></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Row="0" Margin="10">
-            <TextBlock FontSize="20">WorkList</TextBlock>
+        <Grid Grid.Row="0">
+            <materialDesign:ColorZone
+                Mode="PrimaryDark"
+                Padding="16">
+                <DockPanel>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="25"
+                            FontWeight="Bold">
+                            WORK LIST
+                        </TextBlock>
+                    </StackPanel>
+                </DockPanel>
+            </materialDesign:ColorZone>
         </Grid>
         <Grid Row="1" Margin="10">
-            <Button Width="100" Command="{Binding ImportCommand}" Cursor="Hand">Import</Button>
+            <Button HorizontalAlignment="Right"
+                Width="100" Command="{Binding ImportCommand}" Cursor="Hand">Import</Button>
         </Grid>
         <Grid Row="2" Margin="10">
+            <DataGrid ItemsSource="{Binding WorkList,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="true"
+                              SelectionMode="Single"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              IsSynchronizedWithCurrentItem="True"
+                              SelectedItem ="{Binding SelectTStudyList.Value}"
+                              AutoGenerateColumns="False">
+                <DataGrid.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick"
+                                          Command="{Binding SelectCommand}"
+                                          CommandParameter="{Binding SelectTStudyList.Value}">
+                    </MouseBinding>
+                </DataGrid.InputBindings>
+                <!--<DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>-->
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="オーダ番号" 
+                                        MinWidth="80"
+                                        Binding="{Binding OrderNo.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="検査日付" 
+                                        Binding="{Binding StudyDate.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="処理区分" 
+                                        Binding="{Binding ProcessingType.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="検査種別&#10;　コード"
+                                        Binding="{Binding InspectionType.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="検査種別&#10;　名称" 
+                                        Binding="{Binding InspectionName.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="患者ID" 
+                                        Binding="{Binding PatientId.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="患者漢字&#10;　氏名" 
+                                        Binding="{Binding PatientNameKanji.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="患者カナ&#10;　氏名" 
+                                        Binding="{Binding PatientNameKana.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="　患者&#10;生年月日" 
+                                        Binding="{Binding PatientBirth.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="患者性別" 
+                                        Binding="{Binding PatientSex.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="撮影項目&#10;　コード" 
+                                        Binding="{Binding MenuCodes.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="撮影項目&#10;　名称" 
+                                        Binding="{Binding MenuNames.Value,
+                                                UpdateSourceTrigger=PropertyChanged,
+                                                NotifyOnValidationError=True,
+                                                Mode=TwoWay}"
+                                                CanUserResize="False">
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid Row="3" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Margin="5">
-                <Button HorizontalAlignment="Left" Command="{Binding BackCommand}">Back</Button>
+                <Button Width="100" HorizontalAlignment="Left" Command="{Binding BackCommand}">Back</Button>
             </Grid>
             <Grid Grid.Column="1" Margin="5">
-                <Button HorizontalAlignment="Right" Command="{Binding LogoutCommand}">Logout</Button>
+                <Button Width="100" HorizontalAlignment="Right" Command="{Binding LogoutCommand}">Logout</Button>
             </Grid>
         </Grid>
     </Grid>

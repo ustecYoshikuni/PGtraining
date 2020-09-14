@@ -1,6 +1,7 @@
 ﻿using PGtraining.Lib.Import;
 using PGtraining.Lib.Log;
 using PGtraining.Lib.Setting;
+using PGtraining.RisMenu.Model;
 using Prism.Mvvm;
 using Prism.Regions;
 using Reactive.Bindings;
@@ -20,7 +21,13 @@ namespace PGtraining.RisMenu.ViewModels
 
         private ViewManager ViewManager;
 
+        private System.Reactive.Disposables.CompositeDisposable Disposables = new System.Reactive.Disposables.CompositeDisposable();
+
+        public ReadOnlyReactiveCollection<OrderModel> WorkList { get; set; }
+
         private Log Log = new Log();
+
+        private WorkListModel Model = null;
 
         public WorkListViewModel(IRegionManager regionManager, ViewManager viewManager)
         {
@@ -41,6 +48,11 @@ namespace PGtraining.RisMenu.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             this.RegionNavigationService = navigationContext.NavigationService;
+            this.Model = navigationContext.Parameters["Model"] as WorkListModel;
+
+            this.WorkList = this.Model.WorkList.ToReadOnlyReactiveCollection();
+
+            this.RaisePropertyChanged(null);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext) => true;
@@ -56,6 +68,9 @@ namespace PGtraining.RisMenu.ViewModels
             this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Menu);
         }
 
+        /// <summary>
+        /// フォルダ内のファイル読込
+        /// </summary>
         private void Import()
         {
             this.Log.Write($"フォルダ読込開始：{Setting.ImportFolderPath}", LevelEnum.INFO);
