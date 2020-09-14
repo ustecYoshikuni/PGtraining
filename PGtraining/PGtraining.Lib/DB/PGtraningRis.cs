@@ -23,9 +23,8 @@ namespace PGtraining.Lib.DB
     [Table("Orders")]
     public partial class Order
     {
-        [Key]
         public virtual int Id { get; set; }
-
+        [Key]
         public virtual string OrderNo { get; set; }
         public virtual string StudyDate { get; set; }
         public virtual string ProcessingType { get; set; }
