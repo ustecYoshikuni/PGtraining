@@ -61,8 +61,12 @@
     <Build Include="Orders.sql" />
     <Build Include="Menu.sql" />
     <Build Include="OrderView.sql" />
+    <Build Include="Users.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Database.refactorlog" />
   </ItemGroup>
 </Project>

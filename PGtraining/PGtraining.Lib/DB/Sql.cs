@@ -9,6 +9,39 @@ namespace PGtraining.Lib.DB
 {
     public static class Sql
     {
+        /// <summary>
+        /// 有効期限内のUserIdの情報取得
+        /// </summary>
+        /// <returns></returns>
+        public static User GetUsers(string userId)
+        {
+            var log = new Lib.Log.Log();
+            var results = new User();
+            var now = DateTime.Now;
+
+            using (var connection = new SqlConnection())
+            using (var command = new SqlCommand())
+            {
+                try
+                {
+                    connection.ConnectionString = Setting.Setting.ConnectionString;
+                    connection.Open();
+
+                    var users = connection.Find<User>(statement => statement.Where($"{nameof(User.UserId):C}='{userId}' AND '{now.Date}' < {nameof(User.ExpirationDate):C}"));
+                    results = (users == null) ? new User() : users.First();
+                }
+                catch (Exception ex)
+                {
+                    log.Write(ex.ToString(), LevelEnum.ERRROR);
+                }
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// 検査情報すべて取得
+        /// </summary>
+        /// <returns></returns>
         public static List<OrderView> GetOrders()
         {
             var log = new Lib.Log.Log();

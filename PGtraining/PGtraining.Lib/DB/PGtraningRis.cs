@@ -40,6 +40,22 @@ namespace PGtraining.Lib.DB
     }
 
     /// <summary>
+    /// A class which represents the Users table.
+    /// </summary>
+    [Table("Users")]
+    public partial class User
+    {
+        public virtual int Id { get; set; }
+
+        [Key]
+        public virtual string UserId { get; set; }
+
+        public virtual string Name { get; set; }
+        public virtual string PassWord { get; set; }
+        public virtual string ExpirationDate { get; set; }
+    }
+
+    /// <summary>
     /// A class which represents the OrderView view.
     /// </summary>
     [Table("OrderView")]
