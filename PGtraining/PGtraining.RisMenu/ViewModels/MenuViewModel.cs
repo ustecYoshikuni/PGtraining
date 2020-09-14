@@ -1,4 +1,5 @@
 ﻿using PGtraining.Lib.Setting;
+using PGtraining.RisMenu.Model;
 using Prism.Mvvm;
 using Prism.Regions;
 using Reactive.Bindings;
@@ -44,7 +45,10 @@ namespace PGtraining.RisMenu.ViewModels
 
         private void ToWorkList()
         {
-            this.RegionManager.RequestNavigate("ContentRegion", ViewManager.WorkList);
+            var model = new WorkListModel();
+            var param = new Prism.Regions.NavigationParameters();
+            param.Add("Model", model);
+            this.RegionManager.RequestNavigate("ContentRegion", ViewManager.WorkList, param);
         }
     }
 }
