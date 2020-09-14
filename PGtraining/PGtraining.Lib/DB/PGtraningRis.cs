@@ -10,7 +10,6 @@ namespace PGtraining.Lib.DB
     public partial class Menu
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual int Id { get; set; }
 
         public virtual string OrderNo { get; set; }
@@ -24,12 +23,10 @@ namespace PGtraining.Lib.DB
     [Table("Orders")]
     public partial class Order
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public virtual int Id { get; set; }
 
-        [Key]
         public virtual string OrderNo { get; set; }
-
         public virtual string StudyDate { get; set; }
         public virtual string ProcessingType { get; set; }
         public virtual string InspectionType { get; set; }
@@ -39,5 +36,25 @@ namespace PGtraining.Lib.DB
         public virtual string PatientNameKana { get; set; }
         public virtual string PatientBirth { get; set; }
         public virtual string PatientSex { get; set; }
+    }
+
+    /// <summary>
+    /// A class which represents the OrderView view.
+    /// </summary>
+    [Table("OrderView")]
+    public partial class OrderView
+    {
+        public virtual string OrderNo { get; set; }
+        public virtual string StudyDate { get; set; }
+        public virtual string ProcessingType { get; set; }
+        public virtual string InspectionType { get; set; }
+        public virtual string InspectionName { get; set; }
+        public virtual string PatientId { get; set; }
+        public virtual string PatientNameKanji { get; set; }
+        public virtual string PatientNameKana { get; set; }
+        public virtual string PatientBirth { get; set; }
+        public virtual string PatientSex { get; set; }
+        public virtual string MenuCodes { get; set; }
+        public virtual string MenuNames { get; set; }
     }
 }
