@@ -60,6 +60,7 @@
   <ItemGroup>
     <Build Include="Orders.sql" />
     <Build Include="Menu.sql" />
+    <Build Include="OrderView.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
