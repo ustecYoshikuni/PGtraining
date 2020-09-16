@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Orders]
 (
-	[Id] INT NOT NULL , 
+	[Id] INT IDENTITY (1, 1) NOT NULL , 
     [OrderNo] NCHAR(8) NOT NULL, 
     [StudyDate] NCHAR(8) NOT NULL, 
     [ProcessingType] NCHAR(1) NOT NULL, 
