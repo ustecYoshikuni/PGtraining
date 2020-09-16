@@ -27,31 +27,16 @@ namespace PGtraining.RisMenu.ViewModels
 
         public LoginViewModel(IRegionManager regionManager, ViewManager viewManager)
         {
+            this.RegionManager = regionManager;
+            this.ViewManager = viewManager;
+
             this.UserId = new ReactiveProperty<string>();
             this.PassWord = new ReactiveProperty<string>();
             this.ErrorMessage = new ReactiveProperty<string>();
             this.Model = new LoginModel();
-
-            this.RegionManager = regionManager;
-            this.ViewManager = viewManager;
-
             this.LoginCommand = new ReactiveCommand<object>().WithSubscribe(x => this.Login(x));
 
-            this.UserId = this.Model.UserId
-                .ToReactivePropertyAsSynchronized(x => x.Value)
-                .AddTo(this.Disposables);
-
-            this.PassWord = this.Model.PassWord
-                .ToReactivePropertyAsSynchronized(x => x.Value)
-                .AddTo(this.Disposables);
-
-            this.ErrorMessage = this.Model.ErrorMessage
-                .ToReactivePropertyAsSynchronized(x => x.Value)
-                .AddTo(this.Disposables);
-
-            // RaisePropertyChanged のパラメータに null か string.Empty をセットすると
-            //全プロパティを一括で呼び出す⇒VとVMをつなげた後に一括で画面の更新する必要がある
-            this.RaisePropertyChanged(null);
+            this.ModelViewModelConnect();
         }
 
         #region '画面遷移'
@@ -61,7 +46,11 @@ namespace PGtraining.RisMenu.ViewModels
             this.RegionNavigationService = navigationContext.NavigationService;
 
             this.Model = new LoginModel();
+            this.ModelViewModelConnect();
+        }
 
+        private void ModelViewModelConnect()
+        {
             this.UserId = this.Model.UserId
                 .ToReactivePropertyAsSynchronized(x => x.Value)
                 .AddTo(this.Disposables);
