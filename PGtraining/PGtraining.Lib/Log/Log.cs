@@ -8,7 +8,6 @@ namespace PGtraining.Lib.Log
 {
     public class Log
     {
-        public string FilePath { get; set; } = $"{Setting.Setting.LogFolderPath}\\Log_{DateTime.Now.ToString("yyyyMMdd")}.log";
         public int LogLevel = 4;
         public List<string> StockData = new List<string>();
 
@@ -17,15 +16,17 @@ namespace PGtraining.Lib.Log
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
-        public void Write(string text, LevelEnum level)
+        public void Write(string text, LevelEnum level, string outFolderPath)
         {
+            var filePath = $"{outFolderPath}\\Log_{DateTime.Now.ToString("yyyyMMdd")}.log";
+
             ; if (LogLevel <= (int)level) return;
 
             var message = $"{DateTime.Now}  【{level.ToString()}】:{ text}";
 
             try
             {
-                using (var sw = new StreamWriter(this.FilePath, true, System.Text.Encoding.GetEncoding("Shift_JIS")))
+                using (var sw = new StreamWriter(filePath, true, System.Text.Encoding.GetEncoding("Shift_JIS")))
                 {
                     if (0 < this.StockData.Count)
                     {

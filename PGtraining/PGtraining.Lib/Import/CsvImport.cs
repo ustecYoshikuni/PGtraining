@@ -11,9 +11,9 @@ namespace PGtraining.Lib.Import
 
         private Log.Log Log = new Lib.Log.Log();
 
-        public bool Import(string filePath)
+        public bool Import(string filePath, Setting.Setting setting)
         {
-            this.Log.Write($"Import({filePath})", LevelEnum.INFO);
+            this.Log.Write($"Import({filePath})", LevelEnum.INFO, setting.LogFolderPath);
 
             var result = false;
 
@@ -37,14 +37,14 @@ namespace PGtraining.Lib.Import
                         lists.Add(text);
                     }
 
-                    var order = new Template();
+                    var order = new Template(setting);
                     if (this.ReadOrder(order, lists))
                     {
                     }
                     else
                     {
                         //ログ出力：読込エラー
-                        this.Log.Write("読込失敗", LevelEnum.ERRROR);
+                        this.Log.Write("読込失敗", LevelEnum.ERRROR, setting.LogFolderPath);
                         continue;
                     }
 
@@ -54,17 +54,17 @@ namespace PGtraining.Lib.Import
                     else
                     {
                         //不正データ
-                        this.Log.Write("データが不正", LevelEnum.ERRROR);
+                        this.Log.Write("データが不正", LevelEnum.ERRROR, setting.LogFolderPath);
                         continue;
                     }
 
-                    if (this.DbInsertOrUpdate(order))
+                    if (this.DbInsertOrUpdate(order, setting))
                     {
                     }
                     else
                     {
                         //登録失敗
-                        this.Log.Write("DBの登録に失敗", LevelEnum.ERRROR);
+                        this.Log.Write("DBの登録に失敗", LevelEnum.ERRROR, setting.LogFolderPath);
                         continue;
                     }
                     result = true;
@@ -83,32 +83,32 @@ namespace PGtraining.Lib.Import
             return order.CheckAndSet();
         }
 
-        private bool DbInsertOrUpdate(Template order)
+        private bool DbInsertOrUpdate(Template order, Setting.Setting setting)
         {
             var result = false;
 
-            if (DB.Sql.HasOrderNo(order.Order))
+            if (DB.Sql.HasOrderNo(order.Order, setting))
             {
                 try
                 {
-                    DB.Sql.UpdateOrder(order);
+                    DB.Sql.UpdateOrder(order, setting);
                     result = true;
                 }
                 catch (System.Exception ex)
                 {
-                    this.Log.Write(ex.ToString(), LevelEnum.ERRROR);
+                    this.Log.Write(ex.ToString(), LevelEnum.ERRROR, setting.LogFolderPath);
                 }
             }
             else
             {
                 try
                 {
-                    DB.Sql.InsertOrder(order);
+                    DB.Sql.InsertOrder(order, setting);
                     result = true;
                 }
                 catch (System.Exception ex)
                 {
-                    this.Log.Write(ex.ToString(), LevelEnum.ERRROR);
+                    this.Log.Write(ex.ToString(), LevelEnum.ERRROR, setting.LogFolderPath);
                 }
             }
 

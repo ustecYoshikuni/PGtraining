@@ -13,7 +13,7 @@ namespace PGtraining.Lib.DB
         /// 有効期限内のUserIdの情報取得
         /// </summary>
         /// <returns></returns>
-        public static User GetUsers(string userId)
+        public static User GetUsers(string userId, Setting.Setting setting)
         {
             var log = new Lib.Log.Log();
             var results = new User();
@@ -24,7 +24,7 @@ namespace PGtraining.Lib.DB
             {
                 try
                 {
-                    connection.ConnectionString = Setting.Setting.ConnectionString;
+                    connection.ConnectionString = setting.ConnectionString;
                     connection.Open();
 
                     var users = connection.Find<User>(statement => statement.Where($"{nameof(User.UserId):C}='{userId}' AND '{now.Date}' < {nameof(User.ExpirationDate):C}"));
@@ -32,7 +32,7 @@ namespace PGtraining.Lib.DB
                 }
                 catch (Exception ex)
                 {
-                    log.Write(ex.ToString(), LevelEnum.ERRROR);
+                    log.Write(ex.ToString(), LevelEnum.ERRROR, setting.LogFolderPath);
                 }
             }
             return results;
@@ -42,7 +42,7 @@ namespace PGtraining.Lib.DB
         /// 検査情報すべて取得
         /// </summary>
         /// <returns></returns>
-        public static List<OrderView> GetOrders()
+        public static List<OrderView> GetOrders(Setting.Setting setting)
         {
             var log = new Lib.Log.Log();
             var results = new List<OrderView>();
@@ -52,7 +52,7 @@ namespace PGtraining.Lib.DB
             {
                 try
                 {
-                    connection.ConnectionString = Setting.Setting.ConnectionString;
+                    connection.ConnectionString = setting.ConnectionString;
                     connection.Open();
 
                     var orders = connection.Find<OrderView>();
@@ -60,7 +60,7 @@ namespace PGtraining.Lib.DB
                 }
                 catch (Exception ex)
                 {
-                    log.Write(ex.ToString(), LevelEnum.ERRROR);
+                    log.Write(ex.ToString(), LevelEnum.ERRROR, setting.LogFolderPath);
                 }
             }
             return results;
@@ -72,7 +72,7 @@ namespace PGtraining.Lib.DB
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
-        public static bool HasOrderNo(Order order)
+        public static bool HasOrderNo(Order order, Setting.Setting setting)
         {
             var log = new Lib.Log.Log();
             var result = false;
@@ -82,7 +82,7 @@ namespace PGtraining.Lib.DB
             {
                 try
                 {
-                    connection.ConnectionString = Setting.Setting.ConnectionString;
+                    connection.ConnectionString = setting.ConnectionString;
                     connection.Open();
 
                     var orders = connection.Get(order);
@@ -90,7 +90,7 @@ namespace PGtraining.Lib.DB
                 }
                 catch (Exception ex)
                 {
-                    log.Write(ex.ToString(), LevelEnum.ERRROR);
+                    log.Write(ex.ToString(), LevelEnum.ERRROR, setting.LogFolderPath);
                 }
             }
             return result;
@@ -101,7 +101,7 @@ namespace PGtraining.Lib.DB
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
-        public static bool InsertOrder(Import.Template template)
+        public static bool InsertOrder(Import.Template template, Setting.Setting setting)
         {
             var log = new Lib.Log.Log();
             var result = false;
@@ -111,7 +111,7 @@ namespace PGtraining.Lib.DB
             {
                 try
                 {
-                    connection.ConnectionString = Setting.Setting.ConnectionString;
+                    connection.ConnectionString = setting.ConnectionString;
                     connection.Open();
 
                     using (var tran = connection.BeginTransaction())
@@ -127,7 +127,7 @@ namespace PGtraining.Lib.DB
                 }
                 catch (Exception ex)
                 {
-                    log.Write(ex.ToString(), LevelEnum.ERRROR);
+                    log.Write(ex.ToString(), LevelEnum.ERRROR, setting.LogFolderPath);
                 }
             }
             return result;
@@ -138,7 +138,7 @@ namespace PGtraining.Lib.DB
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
-        public static bool UpdateOrder(Import.Template order)
+        public static bool UpdateOrder(Import.Template order, Setting.Setting setting)
         {
             var log = new Lib.Log.Log();
             var result = false;
@@ -148,7 +148,7 @@ namespace PGtraining.Lib.DB
             {
                 try
                 {
-                    connection.ConnectionString = Setting.Setting.ConnectionString;
+                    connection.ConnectionString = setting.ConnectionString;
                     connection.Open();
 
                     using (var tran = connection.BeginTransaction())
@@ -166,7 +166,7 @@ namespace PGtraining.Lib.DB
                 }
                 catch (Exception ex)
                 {
-                    log.Write(ex.ToString(), LevelEnum.ERRROR);
+                    log.Write(ex.ToString(), LevelEnum.ERRROR, setting.LogFolderPath);
                 }
             }
             return result;

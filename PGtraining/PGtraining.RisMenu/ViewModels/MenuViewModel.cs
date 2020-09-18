@@ -15,11 +15,13 @@ namespace PGtraining.RisMenu.ViewModels
         private IRegionNavigationService RegionNavigationService { get; set; }
 
         private ViewManager ViewManager;
+        private Setting Setting;
 
-        public MenuViewModel(IRegionManager regionManager, ViewManager viewManager)
+        public MenuViewModel(IRegionManager regionManager, ViewManager viewManager, Setting setting)
         {
             this.RegionManager = regionManager;
             this.ViewManager = viewManager;
+            this.Setting = setting;
 
             this.WorkListCommand = new ReactiveCommand();
             this.SettingCommand = new ReactiveCommand();
@@ -40,9 +42,10 @@ namespace PGtraining.RisMenu.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
         }
+
         private void ToSetting()
         {
-            var model = new SettingModel();
+            var model = new SettingModel(this.Setting);
             var param = new Prism.Regions.NavigationParameters();
             param.Add("Model", model);
             this.RegionManager.RequestNavigate("ContentRegion", ViewManager.Setting, param);
@@ -55,7 +58,7 @@ namespace PGtraining.RisMenu.ViewModels
 
         private void ToWorkList()
         {
-            var model = new WorkListModel();
+            var model = new WorkListModel(this.Setting);
             var param = new Prism.Regions.NavigationParameters();
             param.Add("Model", model);
             this.RegionManager.RequestNavigate("ContentRegion", ViewManager.WorkList, param);

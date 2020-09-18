@@ -28,11 +28,13 @@ namespace PGtraining.RisMenu.ViewModels
         private Log Log = new Log();
 
         private WorkListModel Model = null;
+        private Setting Setting = null;
 
-        public WorkListViewModel(IRegionManager regionManager, ViewManager viewManager)
+        public WorkListViewModel(IRegionManager regionManager, ViewManager viewManager, Setting setting)
         {
             this.RegionManager = regionManager;
             this.ViewManager = viewManager;
+            this.Setting = setting;
 
             this.ImportCommand = new ReactiveCommand();
             this.LogoutCommand = new ReactiveCommand();
@@ -73,24 +75,24 @@ namespace PGtraining.RisMenu.ViewModels
         /// </summary>
         private void Import()
         {
-            this.Log.Write($"フォルダ読込開始：{Setting.ImportFolderPath}", LevelEnum.INFO);
+            this.Log.Write($"フォルダ読込開始：{this.Setting.ImportFolderPath}", LevelEnum.INFO, this.Setting.LogFolderPath);
 
             var csvImport = new CsvImport();
             var files = Directory.GetFiles(Setting.ImportFolderPath);
             foreach (var file in files)
             {
-                var result = csvImport.Import(file);
+                var result = csvImport.Import(file, this.Setting);
 
                 if (result)
                 {
-                    this.Log.Write($"ファイル読込成功：{file}", LevelEnum.INFO);
+                    this.Log.Write($"ファイル読込成功：{file}", LevelEnum.INFO, this.Setting.LogFolderPath);
                     var success = $"{Setting.SuccessFolderPath}\\{Path.GetFileName(file)}";
 
                     File.Copy(file, success, true);
                 }
                 else
                 {
-                    this.Log.Write($"ファイル読込失敗：{file}", LevelEnum.INFO);
+                    this.Log.Write($"ファイル読込失敗：{file}", LevelEnum.INFO, this.Setting.LogFolderPath);
                     var success = $"{Setting.ErrorFolderPath}\\{Path.GetFileName(file)}";
 
                     File.Copy(file, success, true);

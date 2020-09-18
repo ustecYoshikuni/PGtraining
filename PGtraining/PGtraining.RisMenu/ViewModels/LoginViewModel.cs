@@ -18,6 +18,7 @@ namespace PGtraining.RisMenu.ViewModels
         private IRegionNavigationService RegionNavigationService { get; set; }
 
         private ViewManager ViewManager;
+        private Setting Setting = null;
         private LoginModel Model = null;
         private System.Reactive.Disposables.CompositeDisposable Disposables = new System.Reactive.Disposables.CompositeDisposable();
 
@@ -25,15 +26,16 @@ namespace PGtraining.RisMenu.ViewModels
         {
         }
 
-        public LoginViewModel(IRegionManager regionManager, ViewManager viewManager)
+        public LoginViewModel(IRegionManager regionManager, ViewManager viewManager, Setting setting)
         {
             this.RegionManager = regionManager;
             this.ViewManager = viewManager;
+            this.Setting = setting;
 
             this.UserId = new ReactiveProperty<string>();
             this.PassWord = new ReactiveProperty<string>();
             this.ErrorMessage = new ReactiveProperty<string>();
-            this.Model = new LoginModel();
+            this.Model = new LoginModel(setting);
             this.LoginCommand = new ReactiveCommand<object>().WithSubscribe(x => this.Login(x));
 
             this.ModelViewModelConnect();
@@ -45,7 +47,7 @@ namespace PGtraining.RisMenu.ViewModels
         {
             this.RegionNavigationService = navigationContext.NavigationService;
 
-            this.Model = new LoginModel();
+            this.Model = new LoginModel(this.Setting);
             this.ModelViewModelConnect();
         }
 
