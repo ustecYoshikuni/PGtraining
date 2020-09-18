@@ -8,8 +8,9 @@ namespace PGtraining.RisMenu.ViewModels
 {
     public class MenuViewModel : BindableBase, INavigationAware
     {
-        public ReactiveCommand LogoutCommand { get; }
         public ReactiveCommand WorkListCommand { get; }
+        public ReactiveCommand SettingCommand { get; }
+        public ReactiveCommand LogoutCommand { get; }
         private IRegionManager RegionManager { get; set; }
         private IRegionNavigationService RegionNavigationService { get; set; }
 
@@ -20,11 +21,13 @@ namespace PGtraining.RisMenu.ViewModels
             this.RegionManager = regionManager;
             this.ViewManager = viewManager;
 
-            this.LogoutCommand = new ReactiveCommand();
             this.WorkListCommand = new ReactiveCommand();
+            this.SettingCommand = new ReactiveCommand();
+            this.LogoutCommand = new ReactiveCommand();
 
-            this.LogoutCommand.Subscribe(() => this.ToLogin());
             this.WorkListCommand.Subscribe(() => this.ToWorkList());
+            this.SettingCommand.Subscribe(() => this.ToSetting());
+            this.LogoutCommand.Subscribe(() => this.ToLogin());
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -36,6 +39,13 @@ namespace PGtraining.RisMenu.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
+        }
+        private void ToSetting()
+        {
+            var model = new SettingModel();
+            var param = new Prism.Regions.NavigationParameters();
+            param.Add("Model", model);
+            this.RegionManager.RequestNavigate("ContentRegion", ViewManager.Setting, param);
         }
 
         private void ToLogin()

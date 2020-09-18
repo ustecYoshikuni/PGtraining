@@ -51,11 +51,6 @@
                                           CommandParameter="{Binding SelectTStudyList.Value}">
                     </MouseBinding>
                 </DataGrid.InputBindings>
-                <!--<DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>-->
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="オーダ番号"
                                         MinWidth="80"

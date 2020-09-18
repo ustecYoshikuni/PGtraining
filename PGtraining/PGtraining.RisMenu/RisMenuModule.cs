@@ -19,6 +19,7 @@ namespace PGtraining.RisMenu
             containerRegistry.RegisterForNavigation<Views.Login>();
             containerRegistry.RegisterForNavigation<Views.Menu>();
             containerRegistry.RegisterForNavigation<Views.WorkList>();
+            containerRegistry.RegisterForNavigation<Views.Setting>();
         }
     }
 }

@@ -5,5 +5,6 @@
         public readonly string Menu = "Menu";
         public readonly string Login = "Login";
         public readonly string WorkList = "WorkList";
+        public readonly string Setting = "Setting";
     }
 }
