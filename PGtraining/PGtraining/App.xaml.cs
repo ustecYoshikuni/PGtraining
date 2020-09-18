@@ -19,6 +19,7 @@ namespace PGtraining
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterForNavigation<Lib.Setting.Setting>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

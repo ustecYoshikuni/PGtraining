@@ -23,12 +23,15 @@ namespace PGtraining.RisMenu.ViewModels
 
         private SettingModel Model = null;
 
-        public SettingViewModel() { }
+        public SettingViewModel()
+        {
+        }
+
         public SettingViewModel(IRegionManager regionManager, ViewManager viewManager)
         {
             this.RegionManager = regionManager;
             this.ViewManager = viewManager;
- 
+
             this.LogoutCommand = new ReactiveCommand();
             this.BackCommand = new ReactiveCommand();
 
@@ -51,6 +54,7 @@ namespace PGtraining.RisMenu.ViewModels
         {
             this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Login);
         }
+
         private void ToMenu()
         {
             this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Menu);
