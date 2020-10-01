@@ -14,8 +14,9 @@ namespace PGtraining.RisMenu.ViewModels
         private IRegionManager RegionManager { get; set; }
         private IRegionNavigationService RegionNavigationService { get; set; }
 
-        private ViewManager ViewManager;
-        private Setting Setting;
+        private ViewManager ViewManager = null;
+        private Setting Setting = null;
+        private MenuModel Model = null;
 
         public MenuViewModel(IRegionManager regionManager, ViewManager viewManager, Setting setting)
         {
@@ -35,6 +36,8 @@ namespace PGtraining.RisMenu.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             this.RegionNavigationService = navigationContext.NavigationService;
+            this.Model = navigationContext.Parameters["Model"] as MenuModel;
+            this.Setting = this.Model.Setting;
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext) => true;
@@ -48,12 +51,15 @@ namespace PGtraining.RisMenu.ViewModels
             var model = new SettingModel(this.Setting);
             var param = new Prism.Regions.NavigationParameters();
             param.Add("Model", model);
-            this.RegionManager.RequestNavigate("ContentRegion", ViewManager.Setting, param);
+            this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Setting, param);
         }
 
         private void ToLogin()
         {
-            this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Login);
+            var model = new SettingModel(this.Setting);
+            var param = new Prism.Regions.NavigationParameters();
+            param.Add("Model", model);
+            this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Login, param);
         }
 
         private void ToWorkList()
@@ -61,7 +67,7 @@ namespace PGtraining.RisMenu.ViewModels
             var model = new WorkListModel(this.Setting);
             var param = new Prism.Regions.NavigationParameters();
             param.Add("Model", model);
-            this.RegionManager.RequestNavigate("ContentRegion", ViewManager.WorkList, param);
+            this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.WorkList, param);
         }
     }
 }

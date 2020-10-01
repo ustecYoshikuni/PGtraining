@@ -12,7 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"></RowDefinition>
-            <RowDefinition Height="70" ></RowDefinition>
+            <RowDefinition Height="*" ></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="70"></RowDefinition>
         </Grid.RowDefinitions>
@@ -33,7 +33,71 @@
                 </DockPanel>
             </materialDesign:ColorZone>
         </Grid>
-        <Grid Row="1">
+        <Grid Row="1"  Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition ></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="150" >管理対象のフォルダパス</TextBlock>
+                    <TextBox MinWidth="150" Text="{Binding ImportFolderPath.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"></TextBox>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="150" >ファイル名のパターン</TextBlock>
+                    <TextBox MinWidth="150" Text="{Binding FileNamePattern.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"></TextBox>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="150" >処理間隔[sec]</TextBlock>
+                    <TextBox MinWidth="150" Text="{Binding IntervalSec.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"></TextBox>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="3">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="150" >再処理間隔[sec]</TextBlock>
+                    <TextBox MinWidth="150" Text="{Binding RetryIntervalSec.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"></TextBox>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="4">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="150" >再処理回数</TextBlock>
+                    <TextBox MinWidth="150" Text="{Binding RetryCount.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"></TextBox>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="150" >ログ出力フォルダのパス</TextBlock>
+                    <TextBox MinWidth="150" Text="{Binding LogFolderPath.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"></TextBox>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="6">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="150" >成功フォルダのパス</TextBlock>
+                    <TextBox MinWidth="150" Text="{Binding SuccessFolderPath.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"></TextBox>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="7">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="150" >失敗フォルダのパス</TextBlock>
+                    <TextBox MinWidth="150" Text="{Binding ErrorFolderPath.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"></TextBox>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Row="2" Margin="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Margin="5" Width="100" Command="{Binding ReturnCommand}">Return</Button>
+                <Button Margin="5" Width="100" Command="{Binding SaveCommand}">Save</Button>
+            </StackPanel>
         </Grid>
         <Grid Row="3" Margin="10">
             <Grid.ColumnDefinitions>

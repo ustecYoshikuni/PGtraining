@@ -1,12 +1,9 @@
-﻿using PGtraining.Lib.Import;
-using PGtraining.Lib.Log;
+﻿using PGtraining.Lib.Log;
 using PGtraining.Lib.Setting;
 using PGtraining.RisMenu.Model;
 using Prism.Mvvm;
 using Prism.Regions;
 using Reactive.Bindings;
-using System.IO;
-using static PGtraining.Lib.Log.LogLeverl;
 
 namespace PGtraining.RisMenu.ViewModels
 {
@@ -47,20 +44,21 @@ namespace PGtraining.RisMenu.ViewModels
 
         #region 画面遷移
 
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            this.RegionNavigationService = navigationContext.NavigationService;
-            this.Model = navigationContext.Parameters["Model"] as WorkListModel;
-
-            this.WorkList = this.Model.WorkList.ToReadOnlyReactiveCollection();
-
-            this.RaisePropertyChanged(null);
-        }
-
         public bool IsNavigationTarget(NavigationContext navigationContext) => true;
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
+        }
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            this.RegionNavigationService = navigationContext.NavigationService;
+            this.Model = navigationContext.Parameters["Model"] as WorkListModel;
+            this.Setting = this.Model.Setting;
+
+            this.WorkList = this.Model.WorkList.ToReadOnlyReactiveCollection();
+
+            this.RaisePropertyChanged(null);
         }
 
         #endregion 画面遷移
@@ -75,29 +73,7 @@ namespace PGtraining.RisMenu.ViewModels
         /// </summary>
         private void Import()
         {
-            this.Log.Write($"フォルダ読込開始：{this.Setting.ImportFolderPath}", LevelEnum.INFO, this.Setting.LogFolderPath);
-
-            var csvImport = new CsvImport();
-            var files = Directory.GetFiles(Setting.ImportFolderPath);
-            foreach (var file in files)
-            {
-                var result = csvImport.Import(file, this.Setting);
-
-                if (result)
-                {
-                    this.Log.Write($"ファイル読込成功：{file}", LevelEnum.INFO, this.Setting.LogFolderPath);
-                    var success = $"{Setting.SuccessFolderPath}\\{Path.GetFileName(file)}";
-
-                    File.Copy(file, success, true);
-                }
-                else
-                {
-                    this.Log.Write($"ファイル読込失敗：{file}", LevelEnum.INFO, this.Setting.LogFolderPath);
-                    var success = $"{Setting.ErrorFolderPath}\\{Path.GetFileName(file)}";
-
-                    File.Copy(file, success, true);
-                }
-            }
+            this.Model.Import();
         }
     }
 }

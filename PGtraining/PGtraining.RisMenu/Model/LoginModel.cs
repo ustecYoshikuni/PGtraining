@@ -11,7 +11,7 @@ namespace PGtraining.RisMenu.Model
         public ReactiveProperty<string> PassWord { get; }
         public ReactiveProperty<string> ErrorMessage { get; }
 
-        private Setting Setting = null;
+        public Setting Setting = null;
 
         public LoginModel(Setting setting)
         {

@@ -55,5 +55,30 @@
         /// </summary>
         public string ErrorFolderPath { get; set; }
             = @"C:\testLog\error";
+
+        /// <summary>
+        /// 値が同じか判定
+        /// true:同じ false:異なる
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null || this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Setting c = (Setting)obj;
+
+            return (this.ErrorFolderPath == c.ErrorFolderPath) && (this.FileNamePattern == c.FileNamePattern) && (this.ImportFolderPath == c.ImportFolderPath)
+                && (this.IntervalSec == c.IntervalSec) && (this.LogFolderPath == c.LogFolderPath) && (this.RetryCount == c.RetryCount) && (this.RetryIntervalSec == c.RetryIntervalSec)
+                && (this.SuccessFolderPath == c.SuccessFolderPath);
+        }
+
+        public override int GetHashCode()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

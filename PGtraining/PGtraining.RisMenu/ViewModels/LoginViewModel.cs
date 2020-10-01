@@ -47,7 +47,10 @@ namespace PGtraining.RisMenu.ViewModels
         {
             this.RegionNavigationService = navigationContext.NavigationService;
 
-            this.Model = new LoginModel(this.Setting);
+            this.RegionNavigationService = navigationContext.NavigationService;
+            this.Model = navigationContext.Parameters["Model"] as LoginModel;
+            this.Setting = this.Model.Setting;
+
             this.ModelViewModelConnect();
         }
 

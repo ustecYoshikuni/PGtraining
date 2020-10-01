@@ -1,11 +1,16 @@
 ﻿using PGtraining.Lib.Setting;
 using Prism.Mvvm;
 using Reactive.Bindings;
+using System;
+using System.Reactive.Disposables;
 
 namespace PGtraining.RisMenu.Model
 {
-    public class SettingModel : BindableBase
+    public class SettingModel : BindableBase, IDisposable
     {
+        public ReactiveProperty<bool> CanReturn { get; } = new ReactiveProperty<bool>(false);
+        public ReactiveProperty<bool> CanSave { get; } = new ReactiveProperty<bool>(false);
+
         /// <summary>
         /// 監視対象フォルダのパス
         /// </summary>
@@ -46,8 +51,25 @@ namespace PGtraining.RisMenu.Model
         /// </summary>
         public ReactiveProperty<string> ErrorFolderPath { get; } = new ReactiveProperty<string>();
 
+        public Setting Setting = null;
+
+        private Setting BackUpSetting = null;
+
+        protected CompositeDisposable Disposables = new CompositeDisposable();
+
         public SettingModel(Setting setting)
         {
+            this.SetValue(setting);
+
+            this.CanSave.Value = true;
+            this.CanReturn.Value = true;
+        }
+
+        private void SetValue(Setting setting)
+        {
+            this.Setting = setting;
+            this.BackUpSetting = setting;
+
             this.ErrorFolderPath.Value = setting.ErrorFolderPath;
             this.FileNamePattern.Value = setting.FileNamePattern;
             this.ImportFolderPath.Value = setting.ImportFolderPath;
@@ -56,6 +78,57 @@ namespace PGtraining.RisMenu.Model
             this.RetryCount.Value = setting.RetryCount;
             this.RetryIntervalSec.Value = setting.RetryIntervalSec;
             this.SuccessFolderPath.Value = setting.SuccessFolderPath;
+        }
+
+        public void Return()
+        {
+            this.SetValue(this.BackUpSetting);
+        }
+
+        public void Save()
+        {
+            this.Setting = this.SetSetting();
+            this.BackUpSetting = this.Setting;
+        }
+
+        private Setting SetSetting()
+        {
+            var setting = new Setting
+            {
+                ErrorFolderPath = this.ErrorFolderPath.Value,
+                FileNamePattern = this.FileNamePattern.Value,
+                ImportFolderPath = this.ImportFolderPath.Value,
+                IntervalSec = this.IntervalSec.Value,
+                LogFolderPath = this.LogFolderPath.Value,
+                RetryCount = this.RetryCount.Value,
+                RetryIntervalSec = this.RetryIntervalSec.Value,
+                SuccessFolderPath = this.SuccessFolderPath.Value
+            };
+            return setting;
+        }
+
+        public void ChangeAction()
+        {
+            var diff = this.HasDiff();
+            this.CanReturn.Value = diff;
+            this.CanSave.Value = diff;
+        }
+
+        public void SetButton(bool canButton)
+        {
+            this.CanReturn.Value = canButton;
+            this.CanSave.Value = canButton;
+        }
+
+        private bool HasDiff()
+        {
+            var newSetting = this.SetSetting();
+            return !(newSetting.Equals(this.Setting));
+        }
+
+        public void Dispose()
+        {
+            this.Disposables.Dispose();
         }
     }
 }
