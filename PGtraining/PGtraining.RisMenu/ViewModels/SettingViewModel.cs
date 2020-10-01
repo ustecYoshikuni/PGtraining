@@ -60,6 +60,8 @@ namespace PGtraining.RisMenu.ViewModels
         /// </summary>
         public ReactiveProperty<string> ErrorFolderPath { get; set; }
 
+        public ReactiveProperty<Setting> Setting { get; set; }
+
         #endregion 'SettingModel同期用'
 
         private IRegionManager RegionManager { get; set; }
@@ -72,7 +74,7 @@ namespace PGtraining.RisMenu.ViewModels
         private Log Log = new Log();
 
         private SettingModel Model = null;
-        private Setting Setting = null;
+        //private Setting Setting = null;
 
         public SettingViewModel()
         {
@@ -154,6 +156,10 @@ namespace PGtraining.RisMenu.ViewModels
                 .ToReactivePropertyAsSynchronized(x => x.Value)
                 .AddTo(this.Disposables);
 
+            this.Setting = this.Model.Setting
+                .ToReactivePropertyAsSynchronized(x => x.Value)
+                .AddTo(this.Disposables);
+
             this.ReturnCommand = this.CanReturn.ToReactiveCommand().WithSubscribe(() => this.Return());
             this.SaveCommand = this.CanSave.ToReactiveCommand().WithSubscribe(() => this.Save());
 
@@ -179,7 +185,7 @@ namespace PGtraining.RisMenu.ViewModels
 
         private void ToLogin()
         {
-            var model = new LoginModel(this.Setting);
+            var model = new LoginModel(this.Setting.Value);
             var param = new Prism.Regions.NavigationParameters();
             param.Add("Model", model);
             this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Login, param);
@@ -187,7 +193,7 @@ namespace PGtraining.RisMenu.ViewModels
 
         private void ToMenu()
         {
-            var model = new MenuModel(this.Setting);
+            var model = new MenuModel(this.Setting.Value);
             var param = new Prism.Regions.NavigationParameters();
             param.Add("Model", model);
             this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Menu, param);

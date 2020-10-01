@@ -51,7 +51,7 @@ namespace PGtraining.RisMenu.Model
         /// </summary>
         public ReactiveProperty<string> ErrorFolderPath { get; } = new ReactiveProperty<string>();
 
-        public Setting Setting = null;
+        public ReactiveProperty<Setting> Setting { get; } = new ReactiveProperty<Setting>();
 
         private Setting BackUpSetting = null;
 
@@ -67,7 +67,7 @@ namespace PGtraining.RisMenu.Model
 
         private void SetValue(Setting setting)
         {
-            this.Setting = setting;
+            this.Setting.Value = setting;
             this.BackUpSetting = setting;
 
             this.ErrorFolderPath.Value = setting.ErrorFolderPath;
@@ -87,8 +87,8 @@ namespace PGtraining.RisMenu.Model
 
         public void Save()
         {
-            this.Setting = this.SetSetting();
-            this.BackUpSetting = this.Setting;
+            var newSetting = this.SetSetting();
+            this.SetValue(newSetting);
         }
 
         private Setting SetSetting()
