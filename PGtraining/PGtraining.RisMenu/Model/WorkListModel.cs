@@ -29,6 +29,13 @@ namespace PGtraining.RisMenu.Model
             this.WorkList.AddRange(orders.Select(x => new OrderModel(x)));
         }
 
+        public void Reload()
+        {
+            this.Log.Write($"画面更新開始", LevelEnum.INFO, this.Setting.LogFolderPath);
+            this.SetWorkList();
+            this.Log.Write($"画面更新終了", LevelEnum.INFO, this.Setting.LogFolderPath);
+        }
+
         public void Import()
         {
             this.Log.Write($"フォルダ読込開始：{this.Setting.ImportFolderPath}", LevelEnum.INFO, this.Setting.LogFolderPath);

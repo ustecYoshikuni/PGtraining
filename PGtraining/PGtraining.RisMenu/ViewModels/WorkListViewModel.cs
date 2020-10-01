@@ -4,11 +4,13 @@ using PGtraining.RisMenu.Model;
 using Prism.Mvvm;
 using Prism.Regions;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace PGtraining.RisMenu.ViewModels
 {
     public class WorkListViewModel : BindableBase, INavigationAware
     {
+        public ReactiveCommand ReloadCommand { get; }
         public ReactiveCommand ImportCommand { get; }
         public ReactiveCommand LogoutCommand { get; }
         public ReactiveCommand BackCommand { get; }
@@ -33,13 +35,15 @@ namespace PGtraining.RisMenu.ViewModels
             this.ViewManager = viewManager;
             this.Setting = setting;
 
+            this.ReloadCommand = new ReactiveCommand();
             this.ImportCommand = new ReactiveCommand();
             this.LogoutCommand = new ReactiveCommand();
             this.BackCommand = new ReactiveCommand();
 
-            this.LogoutCommand.Subscribe(() => this.ToMenu());
-            this.BackCommand.Subscribe(() => this.RegionNavigationService.Journal.GoBack());
-            this.ImportCommand.Subscribe(() => this.Import());
+            this.ReloadCommand.Subscribe(()=> this.Reload()).AddTo(this.Disposables);
+            this.ImportCommand.Subscribe( ()=> this.Import()).AddTo(this.Disposables);
+            this.LogoutCommand.Subscribe(() => this.ToMenu()).AddTo(this.Disposables);
+            this.BackCommand.Subscribe(() => this.RegionNavigationService.Journal.GoBack()).AddTo(this.Disposables); ;
         }
 
         #region 画面遷移
@@ -69,11 +73,20 @@ namespace PGtraining.RisMenu.ViewModels
         }
 
         /// <summary>
+        /// DB再読み込み
+        /// </summary>
+        private void Reload()
+        {
+            this.Model.Reload();
+        }
+
+        /// <summary>
         /// フォルダ内のファイル読込
         /// </summary>
         private void Import()
         {
             this.Model.Import();
+            this.Model.Reload();
         }
     }
 }
