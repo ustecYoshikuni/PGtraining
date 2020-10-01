@@ -5,18 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:PGtraining.RisMenu.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance local:MenuViewModel}"
              prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Row="0" Margin="10">
-            <TextBlock FontSize="20">Menu</TextBlock>
+        <Grid Grid.Row="0">
+            <materialDesign:ColorZone
+                Mode="PrimaryDark"
+                Padding="16">
+                <DockPanel>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="25"
+                            FontWeight="Bold">
+                            MENU
+                        </TextBlock>
+                    </StackPanel>
+                </DockPanel>
+            </materialDesign:ColorZone>
         </Grid>
         <Grid Row="1" Margin="10">
             <Button Width="100" Command="{Binding WorkListCommand}">WorkList</Button>
@@ -25,7 +40,7 @@
             <Button Width="100" Command="{Binding SettingCommand}">Setting</Button>
         </Grid>
         <Grid Row="3" Margin="10">
-            <Button Width="100" Command="{Binding LogoutCommand}">Logout</Button>
+            <Button HorizontalAlignment="Right" Width="100" Command="{Binding LogoutCommand}">Logout</Button>
         </Grid>
     </Grid>
 </UserControl>

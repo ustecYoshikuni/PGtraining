@@ -11,5 +11,10 @@ namespace PGtraining.RisMenu.Views
         {
             InitializeComponent();
         }
+
+        private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.passwordBox.Clear();
+        }
     }
 }

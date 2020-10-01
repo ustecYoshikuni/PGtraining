@@ -56,7 +56,7 @@ namespace PGtraining.RisMenu.ViewModels
 
         private void ToLogin()
         {
-            var model = new SettingModel(this.Setting);
+            var model = new LoginModel(this.Setting);
             var param = new Prism.Regions.NavigationParameters();
             param.Add("Model", model);
             this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Login, param);

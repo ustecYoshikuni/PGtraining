@@ -46,8 +46,6 @@ namespace PGtraining.RisMenu.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             this.RegionNavigationService = navigationContext.NavigationService;
-
-            this.RegionNavigationService = navigationContext.NavigationService;
             this.Model = navigationContext.Parameters["Model"] as LoginModel;
             this.Setting = this.Model.Setting;
 
@@ -93,7 +91,10 @@ namespace PGtraining.RisMenu.ViewModels
 
         public void ToMenu()
         {
-            this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Menu);
+            var model = new MenuModel(this.Setting);
+            var param = new Prism.Regions.NavigationParameters();
+            param.Add("Model", model);
+            this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Menu, param);
         }
     }
 }
