@@ -33,13 +33,13 @@
                 </DockPanel>
             </materialDesign:ColorZone>
         </Grid>
-        <Grid Row="1" Margin="10">
+        <Grid Row="1" Margin="10" VerticalAlignment="Center">
             <StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock  Width="100">ユーザーID</TextBlock>
                     <TextBox Width="200" Text="{Binding UserId.Value,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"></TextBox>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock  Width="100">パスワード</TextBlock>
                     <PasswordBox Name="passwordBox"  Width="200">
                     </PasswordBox>

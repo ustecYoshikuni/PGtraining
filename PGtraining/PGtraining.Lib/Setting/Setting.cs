@@ -56,6 +56,12 @@
         public string ErrorFolderPath { get; set; }
             = @"C:\testLog\error";
 
+        public bool CanAutoReload { get; set; }
+            = false;
+
+        public int AutoReloadTime { get; set; }
+            = 30;
+
         /// <summary>
         /// 値が同じか判定
         /// true:同じ false:異なる
@@ -73,7 +79,7 @@
 
             return (this.ErrorFolderPath == c.ErrorFolderPath) && (this.FileNamePattern == c.FileNamePattern) && (this.ImportFolderPath == c.ImportFolderPath)
                 && (this.IntervalSec == c.IntervalSec) && (this.LogFolderPath == c.LogFolderPath) && (this.RetryCount == c.RetryCount) && (this.RetryIntervalSec == c.RetryIntervalSec)
-                && (this.SuccessFolderPath == c.SuccessFolderPath);
+                && (this.SuccessFolderPath == c.SuccessFolderPath) && (this.CanAutoReload == c.CanAutoReload) && (this.AutoReloadTime == this.AutoReloadTime);
         }
 
         public override int GetHashCode()

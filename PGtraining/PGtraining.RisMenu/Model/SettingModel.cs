@@ -51,7 +51,11 @@ namespace PGtraining.RisMenu.Model
         /// </summary>
         public ReactiveProperty<string> ErrorFolderPath { get; } = new ReactiveProperty<string>();
 
-        public ReactiveProperty<Setting> Setting { get; } = new ReactiveProperty<Setting>();
+        public Setting Setting { get; set; }
+
+        public ReactiveProperty<bool> CanAutoReload { get; } = new ReactiveProperty<bool>();
+        public ReactiveProperty<bool> IsReadOnryInput { get; } = new ReactiveProperty<bool>();
+        public ReactiveProperty<int> AutoReloadTime { get; } = new ReactiveProperty<int>();
 
         private Setting BackUpSetting = null;
 
@@ -67,9 +71,6 @@ namespace PGtraining.RisMenu.Model
 
         private void SetValue(Setting setting)
         {
-            this.Setting.Value = setting;
-            this.BackUpSetting = setting;
-
             this.ErrorFolderPath.Value = setting.ErrorFolderPath;
             this.FileNamePattern.Value = setting.FileNamePattern;
             this.ImportFolderPath.Value = setting.ImportFolderPath;
@@ -78,6 +79,13 @@ namespace PGtraining.RisMenu.Model
             this.RetryCount.Value = setting.RetryCount;
             this.RetryIntervalSec.Value = setting.RetryIntervalSec;
             this.SuccessFolderPath.Value = setting.SuccessFolderPath;
+            this.CanAutoReload.Value = setting.CanAutoReload;
+            this.AutoReloadTime.Value = setting.AutoReloadTime;
+
+            /// なんでValueではいらない。。。こいつだけ↓
+            //this.Setting.Value.ReloadTime = setting.ReloadTime;
+            this.BackUpSetting = setting;
+            this.Setting = setting;
         }
 
         public void Return()
@@ -85,16 +93,18 @@ namespace PGtraining.RisMenu.Model
             this.SetValue(this.BackUpSetting);
         }
 
-        public void Save()
+        public Setting Save()
         {
             var newSetting = this.SetSetting();
             this.SetValue(newSetting);
+            return newSetting;
         }
 
         private Setting SetSetting()
         {
             var setting = new Setting
             {
+                AutoReloadTime = this.AutoReloadTime.Value,
                 ErrorFolderPath = this.ErrorFolderPath.Value,
                 FileNamePattern = this.FileNamePattern.Value,
                 ImportFolderPath = this.ImportFolderPath.Value,
@@ -102,7 +112,8 @@ namespace PGtraining.RisMenu.Model
                 LogFolderPath = this.LogFolderPath.Value,
                 RetryCount = this.RetryCount.Value,
                 RetryIntervalSec = this.RetryIntervalSec.Value,
-                SuccessFolderPath = this.SuccessFolderPath.Value
+                SuccessFolderPath = this.SuccessFolderPath.Value,
+                CanAutoReload = this.CanAutoReload.Value
             };
             return setting;
         }

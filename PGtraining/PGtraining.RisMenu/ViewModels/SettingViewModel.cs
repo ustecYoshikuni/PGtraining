@@ -14,7 +14,7 @@ namespace PGtraining.RisMenu.ViewModels
         public ReactiveCommand SaveCommand { get; set; }
         public ReactiveCommand LogoutCommand { get; }
         public ReactiveCommand BackCommand { get; }
-
+        public ReactiveProperty<bool> IsReadOnryInput { get; } = new ReactiveProperty<bool>();
         public ReactiveProperty<bool> CanReturn { get; set; }
         public ReactiveProperty<bool> CanSave { get; set; }
 
@@ -60,7 +60,11 @@ namespace PGtraining.RisMenu.ViewModels
         /// </summary>
         public ReactiveProperty<string> ErrorFolderPath { get; set; }
 
-        public ReactiveProperty<Setting> Setting { get; set; }
+        public ReactiveProperty<bool> CanAutoReload { get; set; }
+        public ReactiveProperty<int> AutoReloadTime { get; set; }
+
+        //public ReactiveProperty<Setting> Setting { get; set; } = new ReactiveProperty<Setting>();
+        public Setting Setting { get; set; }
 
         #endregion 'SettingModel同期用'
 
@@ -74,7 +78,6 @@ namespace PGtraining.RisMenu.ViewModels
         private Log Log = new Log();
 
         private SettingModel Model = null;
-        //private Setting Setting = null;
 
         public SettingViewModel()
         {
@@ -102,6 +105,7 @@ namespace PGtraining.RisMenu.ViewModels
         {
             this.RegionNavigationService = navigationContext.NavigationService;
             this.Model = navigationContext.Parameters["Model"] as SettingModel;
+
             this.Setting = this.Model.Setting;
 
             this.ErrorFolderPath = this.Model.ErrorFolderPath
@@ -156,7 +160,11 @@ namespace PGtraining.RisMenu.ViewModels
                 .ToReactivePropertyAsSynchronized(x => x.Value)
                 .AddTo(this.Disposables);
 
-            this.Setting = this.Model.Setting
+            this.CanAutoReload = this.Model.CanAutoReload
+                .ToReactivePropertyAsSynchronized(x => x.Value)
+                .AddTo(this.Disposables);
+
+            this.AutoReloadTime = this.Model.AutoReloadTime
                 .ToReactivePropertyAsSynchronized(x => x.Value)
                 .AddTo(this.Disposables);
 
@@ -168,6 +176,10 @@ namespace PGtraining.RisMenu.ViewModels
             this.RaisePropertyChanged(null);
         }
 
+        private void SetIsReadOnly(bool canInput)
+        {
+        }
+
         private void Return()
         {
             this.Model.Return();
@@ -175,7 +187,7 @@ namespace PGtraining.RisMenu.ViewModels
 
         private void Save()
         {
-            this.Model.Save();
+            this.Setting = this.Model.Save();
         }
 
         private void SetCanButton()
@@ -185,7 +197,7 @@ namespace PGtraining.RisMenu.ViewModels
 
         private void ToLogin()
         {
-            var model = new LoginModel(this.Setting.Value);
+            var model = new LoginModel(this.Setting);
             var param = new Prism.Regions.NavigationParameters();
             param.Add("Model", model);
             this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Login, param);
@@ -193,7 +205,7 @@ namespace PGtraining.RisMenu.ViewModels
 
         private void ToMenu()
         {
-            var model = new MenuModel(this.Setting.Value);
+            var model = new MenuModel(this.Setting);
             var param = new Prism.Regions.NavigationParameters();
             param.Add("Model", model);
             this.RegionManager.RequestNavigate("ContentRegion", this.ViewManager.Menu, param);
