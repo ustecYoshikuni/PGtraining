@@ -5,6 +5,8 @@ using Prism.Mvvm;
 using Prism.Regions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System;
+using System.Reactive.Linq;
 
 namespace PGtraining.RisMenu.ViewModels
 {
@@ -14,7 +16,7 @@ namespace PGtraining.RisMenu.ViewModels
         public ReactiveCommand SaveCommand { get; set; }
         public ReactiveCommand LogoutCommand { get; }
         public ReactiveCommand BackCommand { get; }
-        public ReactiveProperty<bool> IsReadOnryInput { get; } = new ReactiveProperty<bool>();
+        public ReactiveProperty<bool> IsReadOnryInput { get; set; } = new ReactiveProperty<bool>();
         public ReactiveProperty<bool> CanReturn { get; set; }
         public ReactiveProperty<bool> CanSave { get; set; }
 
@@ -63,7 +65,6 @@ namespace PGtraining.RisMenu.ViewModels
         public ReactiveProperty<bool> CanAutoReload { get; set; }
         public ReactiveProperty<int> AutoReloadTime { get; set; }
 
-        //public ReactiveProperty<Setting> Setting { get; set; } = new ReactiveProperty<Setting>();
         public Setting Setting { get; set; }
 
         #endregion 'SettingModel同期用'
@@ -167,6 +168,24 @@ namespace PGtraining.RisMenu.ViewModels
             this.AutoReloadTime = this.Model.AutoReloadTime
                 .ToReactivePropertyAsSynchronized(x => x.Value)
                 .AddTo(this.Disposables);
+
+            this.ErrorFolderPath.Subscribe(_ => this.Model.ChangeAction());
+            this.FileNamePattern.Subscribe(_ => this.Model.ChangeAction());
+            this.ImportFolderPath.Subscribe(_ => this.Model.ChangeAction());
+            this.IntervalSec.Subscribe(_ => this.Model.ChangeAction());
+            this.LogFolderPath.Subscribe(_ => this.Model.ChangeAction());
+            this.RetryCount.Subscribe(_ => this.Model.ChangeAction());
+            this.RetryIntervalSec.Subscribe(_ => this.Model.ChangeAction());
+            this.SuccessFolderPath.Subscribe(_ => this.Model.ChangeAction());
+            this.RetryIntervalSec.Subscribe(_ => this.Model.ChangeAction());
+            this.SuccessFolderPath.Subscribe(_ => this.Model.ChangeAction());
+            this.RetryIntervalSec.Subscribe(_ => this.Model.ChangeAction());
+            this.CanAutoReload.Subscribe(x =>
+            {
+                this.Model.ChangeAction();
+                this.IsReadOnryInput.Value = !x;
+            });
+            this.AutoReloadTime.Subscribe(_ => this.Model.ChangeAction());
 
             this.ReturnCommand = this.CanReturn.ToReactiveCommand().WithSubscribe(() => this.Return());
             this.SaveCommand = this.CanSave.ToReactiveCommand().WithSubscribe(() => this.Save());

@@ -54,7 +54,8 @@ namespace PGtraining.RisMenu.Model
         public Setting Setting { get; set; }
 
         public ReactiveProperty<bool> CanAutoReload { get; } = new ReactiveProperty<bool>();
-        public ReactiveProperty<bool> IsReadOnryInput { get; } = new ReactiveProperty<bool>();
+
+        //public ReactiveProperty<bool> IsReadOnryInput { get; } = new ReactiveProperty<bool>();
         public ReactiveProperty<int> AutoReloadTime { get; } = new ReactiveProperty<int>();
 
         private Setting BackUpSetting = null;
@@ -64,9 +65,7 @@ namespace PGtraining.RisMenu.Model
         public SettingModel(Setting setting)
         {
             this.SetValue(setting);
-
-            this.CanSave.Value = true;
-            this.CanReturn.Value = true;
+            setting.Read();
         }
 
         private void SetValue(Setting setting)
@@ -82,8 +81,6 @@ namespace PGtraining.RisMenu.Model
             this.CanAutoReload.Value = setting.CanAutoReload;
             this.AutoReloadTime.Value = setting.AutoReloadTime;
 
-            /// なんでValueではいらない。。。こいつだけ↓
-            //this.Setting.Value.ReloadTime = setting.ReloadTime;
             this.BackUpSetting = setting;
             this.Setting = setting;
         }
@@ -96,7 +93,10 @@ namespace PGtraining.RisMenu.Model
         public Setting Save()
         {
             var newSetting = this.SetSetting();
+            newSetting.Write();
+
             this.SetValue(newSetting);
+            this.ChangeAction();
             return newSetting;
         }
 
@@ -140,6 +140,16 @@ namespace PGtraining.RisMenu.Model
         public void Dispose()
         {
             this.Disposables.Dispose();
+        }
+
+        private bool Write()
+        {
+            return true;
+        }
+
+        private bool Read()
+        {
+            return true;
         }
     }
 }

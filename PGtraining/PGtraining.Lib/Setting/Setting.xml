@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<setting>
+  <ConnectionString>Data Source=DESKTOP-422HNHF\SQLEXPRESS;Initial Catalog = PGtraningRis; User ID = sa; Password=us@dmin</ConnectionString>
+  <ImportFolderPath>C:\Users\Yoshikuni\source\repos\PGtraining\PGtraining\sample</ImportFolderPath>
+  <FileNamePattern>*.csv</FileNamePattern>
+  <IntervalSec>10</IntervalSec>
+  <RetryIntervalSec>3</RetryIntervalSec>
+  <RetryCount>3</RetryCount>
+  <LogFolderPath>C:\testLog</LogFolderPath>
+  <SuccessFolderPath>C:\testLog\success</SuccessFolderPath>
+  <ErrorFolderPath>C:\testLog\error</ErrorFolderPath>
+  <CanAutoReload>false</CanAutoReload>
+  <AutoReloadTime>30</AutoReloadTime>
+</setting>

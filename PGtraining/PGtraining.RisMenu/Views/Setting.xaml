@@ -125,7 +125,9 @@
                         <Grid Grid.Row="1">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Width="150" >自動更新間隔</TextBlock>
-                                <TextBox MinWidth="150" Text="{Binding AutoReloadTime.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"></TextBox>
+                                <TextBox MinWidth="150" Text="{Binding AutoReloadTime.Value ,UpdateSourceTrigger=Default,Mode=TwoWay}"
+                                         IsReadOnly="{Binding IsReadOnryInput.Value}">
+                                </TextBox>
                             </StackPanel>
                         </Grid>
                     </Grid>

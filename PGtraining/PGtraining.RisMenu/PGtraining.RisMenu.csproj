@@ -21,4 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PGtraining.Lib\PGtraining.Lib.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
 </Project>

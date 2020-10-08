@@ -1,4 +1,9 @@
-﻿namespace PGtraining.Lib.Setting
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+
+namespace PGtraining.Lib.Setting
 {
     public class Setting
     {
@@ -62,6 +67,11 @@
         public int AutoReloadTime { get; set; }
             = 30;
 
+        public Setting()
+        {
+            this.Read();
+        }
+
         /// <summary>
         /// 値が同じか判定
         /// true:同じ false:異なる
@@ -85,6 +95,52 @@
         public override int GetHashCode()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void Read()
+        {
+            if (File.Exists(Properties.Resources.SettingFilePath))
+            {
+                XElement xml = XElement.Load(Properties.Resources.SettingFilePath);
+                IEnumerable<XElement> infos = from item in xml.Elements("setting") select item;
+                foreach (var info in infos)
+                {
+                    this.AutoReloadTime = int.Parse(info.Element("AutoReloadTime").Value);
+                    this.CanAutoReload = bool.Parse(info.Element("CanAutoReload").Value);
+                    this.ConnectionString = info.Element("ConnectionString").Value;
+                    this.ErrorFolderPath = info.Element("ErrorFolderPath").Value;
+                    this.FileNamePattern = info.Element("FileNamePattern").Value;
+                    this.ImportFolderPath = info.Element("ImportFolderPath").Value;
+                    this.IntervalSec = int.Parse(info.Element("IntervalSec").Value);
+                    this.LogFolderPath = info.Element("LogFolderPath").Value;
+                    this.RetryCount = int.Parse(info.Element("RetryCount").Value);
+                    this.RetryIntervalSec = int.Parse(info.Element("RetryIntervalSec").Value);
+                    this.SuccessFolderPath = info.Element("SuccessFolderPath").Value;
+                }
+            }
+        }
+
+        public void Write()
+        {
+            if (File.Exists(Properties.Resources.SettingFilePath))
+            {
+                XElement xml = XElement.Load(Properties.Resources.SettingFilePath);
+                XElement infos = (from item in xml.Elements("setting") select item).Single();
+
+                infos.Element("AutoReloadTime").Value = this.AutoReloadTime.ToString();
+                infos.Element("CanAutoReload").Value = this.CanAutoReload.ToString();
+                infos.Element("ConnectionString").Value = this.ConnectionString;
+                infos.Element("ErrorFolderPath").Value = this.ErrorFolderPath;
+                infos.Element("FileNamePattern").Value = this.FileNamePattern;
+                infos.Element("ImportFolderPath").Value = this.ImportFolderPath;
+                infos.Element("IntervalSec").Value = this.IntervalSec.ToString();
+                infos.Element("LogFolderPath").Value = this.LogFolderPath;
+                infos.Element("RetryCount").Value = this.RetryCount.ToString();
+                infos.Element("RetryIntervalSec").Value = this.RetryIntervalSec.ToString();
+                infos.Element("SuccessFolderPath").Value = this.SuccessFolderPath;
+
+                xml.Save(Properties.Resources.SettingFilePath);
+            }
         }
     }
 }
